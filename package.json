@@ -1,0 +1,22 @@
+{
+  "name": "oracle-no-1",
+  "description": "Call and response between audience and performers.",
+  "version": "0.0.1",
+  "author": {
+    "name": "Mimi Yin",
+    "email": "mimiyin@gmail.com"
+  },
+  "dependencies": {
+    "express": "^4.16.4",
+    "csv-parse": "^4.4.1",
+    "socket.io": "^2.2.0"
+  },
+  "keywords": [
+    "csv",
+    "sockets"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/mimiyin/oracle-no-1.git"
+  }
+}

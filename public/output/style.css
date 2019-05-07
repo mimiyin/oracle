@@ -1,0 +1,21 @@
+body {
+  margin : 0px;
+  padding: 0px;
+  /* display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center; */
+  background-color: #ff00ff;
+
+}
+
+div {
+  position: fixed;
+  text-align: center;
+}
+
+p {
+  position: relative;
+  margin: 0 0 0 -50%;
+  font-size: 5em;
+}
