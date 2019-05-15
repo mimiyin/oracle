@@ -1,0 +1,55 @@
+body {
+  margin : 0px;
+  padding: 20px;
+  /* display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center; */
+  background-color: #ff00ff;
+  font-family: sans-serif;
+}
+
+button.controls {
+  font-size: 2em;
+  float: left;
+  margin: 0 20px 50px 0;
+}
+#auto {
+  float: right;
+}
+
+div {
+  position: fixed;
+  text-align: center;
+}
+
+p {
+  position: relative;
+  margin: 0 0 0 -50%;
+  font-size: 5em;
+}
+
+table {
+  width: 100vw;
+  margin: 10px 0 0 10px;
+}
+
+td {
+  width: 25vw;
+  vertical-align: top;
+}
+
+tr {
+}
+
+button {
+  border: 1px solid black;
+  font-size: 1em;
+  text-align: left;
+}
+button.part {
+  margin-top: 20px;
+  background: black;
+  color: white;
+  border: 1px solid white;
+}
