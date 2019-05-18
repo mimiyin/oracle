@@ -13,6 +13,14 @@ let prompt, options;
 let synth = window.speechSynthesis;
 let voices = synth.getVoices();
 
+console.log("HELLO", voices);
+// Get voices asynchronously
+// window.speechSynthesis.onvoiceschanged = function(e) {
+//   voices = synth.getVoices();
+//   console.log("VOICES", voices);
+// };
+
+
 function setup() {
   createCanvas(windowWidth, windowHeight);
   prompt = select("#prompt");
@@ -43,24 +51,29 @@ function setup() {
     }
   });
 
+
   // Load query
   socket.on('query', function(q) {
-    console.log("QUERY", q);
-    let query = createDiv(q).attribute('id', 'query');
-    let sayThis = new SpeechSynthesisUtterance(q);
-    sayThis.voice = voices[1];
-    synth.speak(sayThis);
-    // Remove query after a certain about of time
-    setTimeout(() => {
-      query.remove();
-    }, 3000);
-  })
+      setTimeout(() => {
+        console.log("QUERY", q);
+        let query = createDiv(q).attribute('id', 'query');
+        let sayThis = new SpeechSynthesisUtterance(q);
+        sayThis.voice = voices[44]; // or 10
+        sayThis.rate = 0.8;
+        sayThis.pitch = 1;
+        synth.speak(sayThis);
+        // Remove query after a certain about of time
+        setTimeout(() => {
+          query.remove();
+        }, 3000);
+      }, random(100));
+  });
 }
 
 //
 function emitQ() {
   let el = select('input');
   let value = el.elt.value;
-  console.log(value);
+  console.log("FREE QUERY: " + value);
   socket.emit('query', value);
 }

@@ -62,6 +62,7 @@ function startQInterval() {
     let query = queries.shift();
     conductors.emit('query', query);
     supplicants.emit('query', query);
+    console.log("NUM Qs LEFT: ", queries.length);
   }
   // Emit
   emitQuery();
@@ -72,6 +73,7 @@ function startQInterval() {
       q_interval = null;
       return;
     }
+    console.log("DOES IT GET HERE?");
     emitQuery();
   }, 3000);
 }
@@ -148,6 +150,7 @@ supplicants.on('connection', function(socket) {
 
   // Tell conductors when a socket has queried
   socket.on('query', function(query) {
+    console.log("RECEIVED QUERY: ", query);
     // Add it to query queue
     queries.push(query);
     // If there's no query interval, start it
@@ -173,7 +176,7 @@ oracles.on('connection', function(socket) {
   // Listen for blop data
   socket.on('shake', function(data) {
     // Data comes in as whatever was sent, including objects
-    //console.log("Received: 'message' " + data);
+    console.log("Received: 'message' " + data);
 
     let message = {
       id: socket.id,

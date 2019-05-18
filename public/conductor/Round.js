@@ -1,10 +1,9 @@
 
 class Round {
-  constructor(name, p_names){
-    this.name = name;
+  constructor(pname){
     this.parts = [];
     for(let p = 0; p < 4; p++) {
-      this.parts.push(new Part(p_names[p]));
+      this.parts.push(new Part(pname));
     }
   }
 

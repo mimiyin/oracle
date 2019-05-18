@@ -9,6 +9,16 @@ body {
   font-family: sans-serif;
 }
 
+#controls {
+  background: coral;
+  padding: 2vh 2vw;
+  width: 100vw;
+  height: 2em;
+  position: fixed;
+  top: 0vh;
+  left: 0vw;
+}
+
 button.controls {
   font-size: 2em;
   float: left;
@@ -16,12 +26,17 @@ button.controls {
 }
 #auto {
   float: right;
+  position: relative;
+  right: 2vw;
 }
 
-div {
-  position: fixed;
-  text-align: center;
+#timer {
+  font-size: 2em;
+  display: inline;
+  position: relative;
+  top: 5px;
 }
+
 
 p {
   position: relative;
@@ -31,7 +46,7 @@ p {
 
 table {
   width: 100vw;
-  margin: 10px 0 0 10px;
+  margin: 5vh 0 0 5vh;
 }
 
 td {

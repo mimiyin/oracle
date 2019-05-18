@@ -2,9 +2,22 @@
 let socket = io('/conductor');
 
 // Listen for confirmation of connection
-socket.on('connect', function() {
-  console.log("Connected");
+socket.on('connect', () => console.log("Connected"));
+
+// Speak
+socket.on('query', query => speak(query));
+
+// Listen for blop data from server
+socket.on('shake', message => {
+  if (asked()) return;
+  let id = message.id;
+  let user = users[id] || createNewUser(id);
+  let response = user[floor(random(user.length))];
+  response.play();
 });
+
+// Remove disconnected users
+socket.on('disconnected', id => delete users[id]);
 
 // Keep track of users
 let users = {};
@@ -18,9 +31,6 @@ let o = 0;
 // Supplicants
 let supplicants = {};
 
-// What next
-let asked = false;
-
 // Alt-text
 let rounds = [];
 let current = {
@@ -30,13 +40,30 @@ let current = {
 
 // Speech stuff
 let synth = window.speechSynthesis;
+
 let voices;
 // Get voices asynchronously
-window.speechSynthesis.onvoiceschanged = function(e) {
-  voices = synth.getVoices();
-};
+window.speechSynthesis.onvoiceschanged = e => {
+  voices=synth.getVoices();
+  console.log(voices);
+}
+
+
+// Can respond
+let last_asked;
+// 3 seconds
+let ASK_TH = 1000 *3;
+
+// Ding
+let ding;
+// Timer
+let timer_el;
+let timer=0;
 
 function preload() {
+  // Load ding
+  ding = loadSound("ding.wav", () => ding.setVolume(0.5));
+
   // Load oracle responses
   yes.push(new Response("yes.wav", "Yes"));
   yes.push(new Response("probably.wav", "Probably"));
@@ -45,9 +72,8 @@ function preload() {
   no.push(new Response("no.wav", "No"));
   no.push(new Response("maybe.wav", "Maybe"));
 
-  // Round and part names
-  let p_names = ["Describe what you see", "Tell us what to do", "Make a request", "Confirm what you suspect"];
-  let r_names = ["ACTION", "DESIRE", "SUBMISSION", "INEVITABILITY"];
+  // Part names
+  let p_names = ["Describe what you see", "Make a request", "Tell me what to do", "Tell me a story"];
 
   // Load alt-text
   let table = loadTable("oracle.csv", function() {
@@ -55,9 +81,8 @@ function preload() {
       for (let p = 0; p < table.getColumnCount(); p++) {
         let query = table.getString(q, p);
         // Create new round
-        console.log(match(query, "NEW ROUND:"));
         if (query == "NEW ROUND") {
-          if (p == 0) rounds.push(new Round(r_names[rounds.length], p_names));
+          if (p == 0) rounds.push(new Round(p_names[rounds.length]));
         } else if (query.length > 0) rounds[rounds.length - 1].addQuery(p, query);
       }
     }
@@ -66,8 +91,6 @@ function preload() {
     for (let r in rounds) {
       let round = rounds[r];
       let row = createElement('tr');
-      let row_header = createElement('tr', round.name);
-      tableEl.child(row.child(row_header));
       let parts = round.getParts();
       for (let p in parts) {
         let part = parts[p];
@@ -90,44 +113,22 @@ function preload() {
       }
     }
   });
+  // Get timer div
+  timer_el = select("#timer");
+  setInterval(()=>{timer--; timer_el.html(timer);}, 1000);
 }
 
+// Keep track of oracles
 function createNewUser(id) {
   users[id] = oracles[o % oracles.length];
   return users[id];
 }
 
 function setup() {
-  //createCanvas(windowWidth, windowHeight);
   noCanvas();
   background(255);
-
-  // Listen for blop data from server
-  socket.on('shake', function(message) {
-    if (asked) return;
-    let id = message.id;
-    let user = users[id] || createNewUser(id);
-    //let trying = true;
-    //while (trying) {
-    let response = user[floor(random(user.length))];
-    response.play();
-    // Wait 1 second
-    setTimeout(function() {
-      roll();
-    }, 1000);
-
-    //trying = false;
-    //}
-  });
-  // Speak
-  socket.on('query', function(query) {
-    speak(query);
-  });
-  // Remove disconnected users
-  socket.on('disconnected', function(id) {
-    delete users[id];
-  });
 }
+
 
 // Automatically move through sections??
 function autoRoll() {
@@ -158,10 +159,13 @@ function manualRoll() {
 // Send out next part to server
 function emitRoll(r, p) {
   console.log("ROLL", r, p);
+  // Play ding
+  ding.play();
+  // Reset timer
+  timer = 120;
   let data = rounds[r].getPart(p);
   if (data) {
     socket.emit('roll', rounds[r].getPart(p));
-    asked = false;
   }
 }
 
@@ -176,12 +180,18 @@ function sendQuery() {
 function speak(query) {
   // Code to utter the string with the right computer voice
   // Let oracle respond
+  last_asked = millis();
   console.log("SAY IT: " + query);
   let sayThis = new SpeechSynthesisUtterance(query);
-  sayThis.voice = voices[10];
-  console.log(voices);
-  synth.speak(sayThis);
-  asked = true;
+  sayThis.voice = voices[40]; // or 10
+  sayThis.rate = 0.8;
+  sayThis.pitch = 1;
+  //synth.speak(sayThis);
+}
+
+// Has something been asked recently?
+function asked() {
+  return millis() - last_asked < ASK_TH;
 }
 
 // Toggle start

@@ -1,5 +1,5 @@
 // Open and connect input socket
-let socket = io('/input');
+let socket = io('/oracle');
 let count = 0;
 
 // Listen for confirmation of connection

@@ -1,7 +1,12 @@
 body {
+  height: 110vh;
   margin: 0px;
   font-family: sans-serif;
-  /* overflow: hidden; */
+  overflow: hidden;
+}
+
+body * {
+  font-size: 10vw;
 }
 
 [hidden="true"] {
@@ -18,11 +23,12 @@ body {
   background: yellow;
 }
 
-#wait p {
-  font-size: 5em;
+.bookend p {
   color: tan;
   opacity: 1;
   animation: fade 3s alternate infinite;
+  position: relative;
+  top: -10vh;
 }
 
 @keyframes fade {
@@ -38,44 +44,44 @@ body {
   background: coral;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: left;
   justify-content: bottom;
-
 }
 
 #prompt {
-  width: 100vw;
-  height: 10vw;
+  width: 90vw;
+  height: 5vh;
+  padding: 0 5vw;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2.5em;
+  font-size: 6vw;
 }
 
 .option {
   width: 90vw;
-  height: 10vh;
+  height: auto;
   float: left;
-  background: pink;
-  border: 5vw outset deeppink;
-  margin: 0;
+  background: salmon;
+  /* border: 5vw outset deeppink; */
+  padding: 1vh;
+  margin: 2vh 5vw;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 2em;
+  text-align: left !important;
+  justify-content: left;
 }
 
 #query {
   position: fixed;
-  top: 0px;
-  left: 0px;
-  width: 100vw;
+  top: 0;
+  left: 0;
+  width: 90vw;
   height: 100vh;
-  padding: 0.5em;
+  padding: 0 5vw;
+  font-size: 15vw;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 4em;
   overflow: hidden;
   background-color: chartreuse;
 }
@@ -87,7 +93,7 @@ body {
 }
 
 #end p {
-  font-size: 5em;
+  font-size: 6vw;
   color: tan;
   position: relative;
 }
@@ -96,21 +102,25 @@ body {
   width: 100vw;
 }
 
-#end div * {
-  margin: 0px;
-  font-size: 2.5em;
-  height: 2em;
-  padding: 0.2em;
-  margin: 0px;
-}
-
 #end textarea {
   width: 90vw;
   height: 50vh;
   resize: none;
+  background: rgba(255, 255, 255, 0.5);
 }
 
 #end button {
-  width: 30vw;
-  height: 2.5em;
+  color: tan;
+  width: 100vw;
+  background: none;
+  border: none;
+  height: 2em;
+}
+
+#slow p#slowdown {
+  animation: fade 3s linear;
+}
+
+#slow p#please {
+  animation: fade 10s ease-in;
 }

@@ -1,73 +1,78 @@
 ﻿ACTION,DESIRE,SUBMISSION,RELEASE
 NEW ROUND,NEW ROUND,NEW ROUND,NEW ROUND
 Walking,Walking the perimeter,Falling,Circling
-Finding,"Chasing after something, do you know what?",Getting up,Spiraling
-Settling,Staying on the sidelines,Shaking,Going in circles
-Pausing,Turning around,Crying,Starting at the beginning
-Stopping,"Lunging after something, I don't know what",Lying face down on the ground,Beginning at the end
-Finding equilibrium,Rushing things,Letting go,Ending at the beginning
-Leaving,Hunger,Giving in,Searching
-Holding,A dog chasing its tail,Kneeling,Following
-Walking away,Walking in circles along a square,Bowing,Leading
-Approaching,,,
-Making a sandwich,,,
+Searching,Chasing,Getting up,Spiraling
+Settling,Staying on the side lines,Hiding,Going in circles
+Pausing,Turning around,Lying face down on the ground,Starting at the beginning
+Stopping,"Lunging after something, I don't know what",Letting go,Beginning at the end
+Finding equilibrium,Rushing things,Giving in,Ending at the beginning
+Leaving,Hunger,Kneeling,Searching
+Holding,A dog chasing its tail,Bowing,Following
+Walking away,Walking in circles along a square,Crawling,Leading
+Approaching,Slowing down,Dying,
+Making a sandwich,Waiting,Sitting,
 Staying,,,
 Floating,,,
+Going up while coming down,,,
+Backing away,,,
 NEW ROUND,NEW ROUND,NEW ROUND,NEW ROUND
-Walk,Hurry,Give in,Look
-Go,We will all be okay,Cry a little,Start over
-Rest,We are all doomed,Fall,Be still
-Pause,The world is ending,Get up,Be done
-Stop,We all need somebody,Lie down,Be in the middle
-Lie,A fish needs a bicycle,Go too far,Follow
-Tell me a lie,Lunge,Hide,Lead
-Tell me a story,Sit,Die a little,Start at the beginning
-Walk away,Turn around,Let go,End at the beginning
-Come,,Kneel,Begin at the end
-Come to me,,Bow,Start where you left off
-Make me a sandwich,,Crawl,
-Staying,,,
-NEW ROUND,NEW ROUND,NEW ROUND,NEW ROUND
-Please walk,Pleae sit,Please kneel,Please start over
+Please walk,Please sit,Please kneel,Please start over
 Please go,Please hurry,Please let go,Please begin
 Please rest,Please turn around,Will you let go,Please follow me
-Please pause,Will you turn around,Please lie down,Will you start at the beginning
+Please pause,Are you willing to turn around,Please lie down,Will you start at the beginning
 Please stop,Please slow down,Please get up,Will you begin at the end
-Will you tell me a story,Will you slow down,Will you get up,Will you end at the beginning
-Will you sing me a song,Can you satisfy your hunger,Will you crawl,Will you begin again
-Will you come to me,Can you contain your hunger,,
-Will you go,,,
+Will you tell me a story,Can you satisfy your hunger,Will you get up,Will you end at the beginning
+Will you sing me a song,Can you hold it in,Will you crawl,Will you begin again
+Will you come towards me,Staying on the side lines,Please die a little,
+Will you go away,Please wait,Please sit,
 Will you walk away,,,
 Will you lie to me,,,
 Will you make me a sandwich,,,
 Please come,,,
 Please stay,,,
+Please hold,,,
 NEW ROUND,NEW ROUND,NEW ROUND,NEW ROUND
-Are you coming,Do you feel hunger,Are you crying,Is it time
-Are you going,Will we all be okay,Are you hiding,"Are you thinking, it's time now"
-Are you leaving,Is the world ending,Do you want to hide,Are you done
-Are you lying,Are you worried that the world is ending,Are you alright,Are you beginning
-Are you trying to tell me something,Is a life partner necessary,Are you giving in,Did you find what you were looking for
-Have you been lying,Are we all doomed,Are you resting,Are you following
-Do you want to go,Are you hungry,Do you want to give in,Are you first
-Do you want to rest,Are you thinking we're all doomed,Would you like to give in,Are you last
-Do you want to pause,Has it begun,Have you already given in,Did you want to be in the middle
-Do you want to stop,Will it go on,Have we gone too far,Did you find the inevitable
-Do you want to stay,Are you worried about something,Is it too much,Are you starting over
-Are you walking away,Is it beginning,Is it too little,Are you starting where you left off
-Do you want to walk away,Do you want to sit,Are we overdoing it,Did you end up where you started
-Is this real,Would you like to sit,Aren't we a bit past it at this point,
-,Aren't you rushing things a bit,Is it over,
-,Does a fish need a bicycle?,Is this a game,
-,,Does it matter,
-,,"At this point, is there still a point",
-,,Aren't we done now,
-,,Isn't it over,
-,,Doesn't it matter,
-,,Isn't this real,
-,,Isn't there a point,
-,,Aren't you going too far,
-,,Do you want to let it go,
-,,Are you ready to let go,
-,,Are you letting go,
+Walk,Hurry,Give in,Look
+Go,Wait,Fall,Start over
+Rest,Sit,Get up,Be still
+Pause,Turn around,Lie down,Be done
+Stop,Slow down,Go too far,Be in the middle
+Lie,Rush things,Hide,Follow
+Tell me a lie,Walk the perimeter,Die a little,Lead
+Tell me a story,Walk in circles along a square,Let go,Start at the beginning
+Walk away,Stay on the edge,Kneel,End at the beginning
+Come,,Bow,Begin at the end
+Come to me,,Crawl,Start where you left off
+Make me a sandwich,,Sit,
+Stay,,,
+Stay with me,,,
+Back away,,,
+NEW ROUND,NEW ROUND,NEW ROUND,NEW ROUND
+There is a boy,There is a square hole,There was a round hole,There was a boy
+There is a girl,It is dark,It was dark,There was a girl
+There is a glass house,It is blue,It was blue,There was a square house
+There are a pair of shoes,It glimmers for a brief moment,It glimmered for a brief moment,There were a pair of shoes
+"In the room, there are curved walls",,,"In the room, there was a glass wall"
+"In the room, there are sharp corners",,,"In the room, there were rounded corners"
+"On the walls, there are gray paintings",,,"On the walls, there were gray paintings"
+There is a bed,,,There was a bed
+There is grass and tall trees,,,"Outside, was grass and tall trees"
+There is a woman,,,There was a woman
+There is a man,,,There was another woman
+There is a child,,,There was a child
+There is a dog,,,There was a dog
+The sky is blue,,,There was a blue sky
+,,,
+,,,
+,,,
+,,,
+,,,
+,,,
+,,,
+,,,
+,,,
+,,,
+,,,
+,,,
+,,,
 ,,,
