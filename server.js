@@ -92,15 +92,20 @@ conductors.on('connection', function(socket) {
   });
 
   // Conductor can speak too
-  socket.on('query', function(query) {
-    receiveQuery();
+  socket.on('query', query => {
+    receiveQuery(query);
   });
 
   // Conductor sets query manually
   // No throttling
-  socket.on('manual query', function(query) {
+  socket.on('manual query', query => {
     supplicants.emit('query', query);
   })
+
+  // Cue chorus
+  socket.on('cue chorus', message => {
+    chorus.emit('query', message);
+  });
 
   // Let supplicants go
   socket.on('roll', function(part) {
@@ -165,30 +170,15 @@ supplicants.on('connection', function(socket) {
   });
 });
 
-// Clients in the response namespace
-const oracles = io.of('/oracle');
+// Clients in the chorus namespace
+const chorus = io.of('/chorus');
 // Listen for input clients to connect
-oracles.on('connection', function(socket) {
+chorus.on('connection', function(socket) {
   console.log('An oracle client connected: ' + socket.id);
-
-  // Listen for blop data
-  socket.on('shake', function(data) {
-    // Data comes in as whatever was sent, including objects
-    console.log("Received: 'message' " + data);
-
-    let message = {
-      id: socket.id,
-      data: data
-    }
-
-    // Send it to all of the output clients
-    conductors.emit('shake', message);
-  });
 
   // Listen for this input client to disconnect
   // Tell all of the output clients this client disconnected
   socket.on('disconnect', function() {
-    console.log("An oracle client has disconnected " + socket.id);
-    conductors.emit('disconnected', socket.id);
+    console.log("A chorus client has disconnected " + socket.id);
   });
 });

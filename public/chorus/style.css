@@ -1,0 +1,21 @@
+body {
+  height: 100vh;
+  margin: 0px;
+  font-family: sans-serif;
+  overflow: hidden;
+}
+
+#query {
+  position: fixed;
+  top: 0vh;
+  left: 0;
+  width: 90vw;
+  height: 115vh;
+  padding: 0 5vw;
+  font-size: 20vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background-color: chartreuse;
+}

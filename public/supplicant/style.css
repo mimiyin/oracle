@@ -1,5 +1,5 @@
 body {
-  height: 110vh;
+  height: 100vh;
   margin: 0px;
   font-family: sans-serif;
   overflow: hidden;
@@ -27,8 +27,6 @@ body * {
   color: tan;
   opacity: 1;
   animation: fade 3s alternate infinite;
-  position: relative;
-  top: -10vh;
 }
 
 @keyframes fade {
@@ -73,10 +71,10 @@ body * {
 
 #query {
   position: fixed;
-  top: -15vh;
+  top: 0vh;
   left: 0;
   width: 90vw;
-  height: 115vh;
+  height: 100vh;
   padding: 0 5vw;
   font-size: 20vw;
   display: flex;
@@ -106,7 +104,7 @@ body * {
   width: 90vw;
   height: 50vh;
   resize: none;
-  background: rgba(255, 255, 255, 0.5);
+  background: greenyellow;
 }
 
 #end button {

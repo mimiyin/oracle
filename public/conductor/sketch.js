@@ -44,12 +44,9 @@ let current = {
 // Speech stuff
 let synth = window.speechSynthesis;
 
-let voices;
+let voices = synth.getVoices();
 // Get voices asynchronously
-window.speechSynthesis.onvoiceschanged = e => {
-  voices = synth.getVoices();
-  console.log(voices);
-}
+window.speechSynthesis.onvoiceschanged = e => voices = synth.getVoices();
 
 
 // Can respond
@@ -98,7 +95,6 @@ function preload() {
         let column = createElement('td');
         let button = createButton(round.name).addClass('part');
         button.attribute('round', r);
-        button.attribute('part', p);
         button.mouseClicked(function(){
           emitRoll(this.attribute('round'), this.attribute('part'))});
         row.child(column.child(button));
@@ -108,6 +104,7 @@ function preload() {
           let q_row = createElement('tr');
           let button = createButton(query);
           button.attribute('query', query);
+          button.attribute('part', p);
           button.mouseClicked(sendQuery);
           q_row.child(button);
           column.child(q_row);
@@ -170,7 +167,9 @@ function speak(query) {
   sayThis.voice = voices[40]; // or 10
   sayThis.rate = current.part ? current.part.rate : 0.8;
   sayThis.pitch = 1;
-  synth.speak(sayThis);
+  setTimeout(()=>synth.speak(sayThis), random(100));
+  // Emit to chorus whatever is said
+  socket.emit('cue chorus', {rate : sayThis.rate, query : query });
 }
 
 // Has something been asked recently?
