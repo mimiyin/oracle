@@ -1,78 +1,64 @@
-﻿ACTION,DESIRE,SUBMISSION,RELEASE
-NEW ROUND,NEW ROUND,NEW ROUND,NEW ROUND
-Walking,Walking the perimeter,Falling,Circling
-Searching,Chasing,Getting up,Spiraling
-Settling,Staying on the side lines,Hiding,Going in circles
-Pausing,Turning around,Lying face down on the ground,Starting at the beginning
-Stopping,"Lunging after something, I don't know what",Letting go,Beginning at the end
-Finding equilibrium,Rushing things,Giving in,Ending at the beginning
-Leaving,Hunger,Kneeling,Searching
-Holding,A dog chasing its tail,Bowing,Following
-Walking away,Walking in circles along a square,Crawling,Leading
-Approaching,Slowing down,Dying,
-Making a sandwich,Waiting,Sitting,
-Staying,,,
-Floating,,,
-Going up while coming down,,,
-Backing away,,,
-NEW ROUND,NEW ROUND,NEW ROUND,NEW ROUND
-Please walk,Please sit,Please kneel,Please start over
-Please go,Please hurry,Please let go,Please begin
-Please rest,Please turn around,Will you let go,Please follow me
-Please pause,Are you willing to turn around,Please lie down,Will you start at the beginning
-Please stop,Please slow down,Please get up,Will you begin at the end
-Will you tell me a story,Can you satisfy your hunger,Will you get up,Will you end at the beginning
-Will you sing me a song,Can you hold it in,Will you crawl,Will you begin again
-Will you come towards me,Staying on the side lines,Please die a little,
-Will you go away,Please wait,Please sit,
-Will you walk away,,,
-Will you lie to me,,,
-Will you make me a sandwich,,,
-Please come,,,
-Please stay,,,
-Please hold,,,
-NEW ROUND,NEW ROUND,NEW ROUND,NEW ROUND
-Walk,Hurry,Give in,Look
-Go,Wait,Fall,Start over
-Rest,Sit,Get up,Be still
-Pause,Turn around,Lie down,Be done
-Stop,Slow down,Go too far,Be in the middle
-Lie,Rush things,Hide,Follow
-Tell me a lie,Walk the perimeter,Die a little,Lead
-Tell me a story,Walk in circles along a square,Let go,Start at the beginning
-Walk away,Stay on the edge,Kneel,End at the beginning
-Come,,Bow,Begin at the end
-Come to me,,Crawl,Start where you left off
-Make me a sandwich,,Sit,
-Stay,,,
-Stay with me,,,
-Back away,,,
-NEW ROUND,NEW ROUND,NEW ROUND,NEW ROUND
-There is a boy,There is a square hole,There was a round hole,There was a boy
-There is a girl,It is dark,It was dark,There was a girl
-There is a glass house,It is blue,It was blue,There was a square house
-There are a pair of shoes,It glimmers for a brief moment,It glimmered for a brief moment,There were a pair of shoes
-"In the room, there are curved walls",,,"In the room, there was a glass wall"
-"In the room, there are sharp corners",,,"In the room, there were rounded corners"
-"On the walls, there are gray paintings",,,"On the walls, there were gray paintings"
-There is a bed,,,There was a bed
-There is grass and tall trees,,,"Outside, was grass and tall trees"
-There is a woman,,,There was a woman
-There is a man,,,There was another woman
-There is a child,,,There was a child
-There is a dog,,,There was a dog
-The sky is blue,,,There was a blue sky
-,,,
-,,,
-,,,
-,,,
-,,,
-,,,
-,,,
-,,,
-,,,
-,,,
-,,,
-,,,
-,,,
-,,,
+﻿0.8,1.2,0.6,1,
+NEW ROUND,NEW ROUND,NEW ROUND,NEW ROUND,Describe what you see
+Walking,Walking the perimeter,Falling,Circling,
+Searching,Chasing,Getting up,Spiraling,
+Settling,Staying on the sidelines,Hiding,Going in circles,
+Pausing,Turning around,Lying face down on the ground,Starting at the beginning,
+Stopping,"Lunging after something, I don't know what",Letting go,Beginning at the end,
+Finding equilibrium,Rushing things,Giving in,Ending at the beginning,
+Leaving,Hunger,Kneeling,Searching,
+Holding,A dog chasing its tail,Bowing,Following,
+Walking away,Walking in circles along a square,Crawling,Leading,
+Approaching,Slowing down,Sitting,,
+Making a sandwich,Waiting,,,
+Staying,,,,
+Floating,,,,
+Going up while coming down,,,,
+Backing away,,,,
+NEW ROUND,NEW ROUND,NEW ROUND,NEW ROUND,Make a request
+Please walk,Please sit,Please kneel,Please start over,
+Please go,Please hurry,Please let go,Please begin,
+Please rest,Please turn around,Will you let go,Please follow me,
+Please pause,Are you willing to turn around,Please lie down,Will you start at the beginning,
+Please stop,Please slow down,Please get up,Will you begin at the end,
+Will you tell me a story,Can you satisfy your hunger,Please die a little,Will you end at the beginning,
+Will you sing me a song,Can you hold it in,Please sit,Will you begin again,
+Will you come towards me,Staying on the sidelines,,,
+Will you go away,Please wait,,,
+Will you walk away,,,,
+Will you lie to me,,,,
+Will you make me a sandwich,,,,
+Please come,,,,
+Please stay,,,,
+Please hold,,,,
+NEW ROUND,NEW ROUND,NEW ROUND,NEW ROUND,Tell me what to do
+Walk,Hurry,Give in,Begin again,
+Go,Wait,Fall,Start over,
+Rest,Sit,Get up,Be still,
+Pause,Turn around,Lie down,Be in the middle,
+Stop,Slow down,Go too far,Follow,
+Lie,Rush things,Hide,Lead,
+Tell me a lie,Walk the perimeter,Die a little,Start at the beginning,
+Tell me a story,Walk in circles along a square,Let go,End at the beginning,
+Walk away,Stay on the sidelines,Kneel,Begin at the end,
+Come,,Bow,Start where you left off,
+Come to me,,Crawl,,
+Make me a sandwich,,Sit,,
+Stay,,,,
+Stay with me,,,,
+Back away,,,,
+NEW ROUND,NEW ROUND,NEW ROUND,NEW ROUND,Tell me a story
+There was a boy,There was a square hole,There is a round opening,There is a boy,
+There was a girl,It was dark,It is light,There is a girl,
+There was a glass house,It was green,It is blue,There is a square house,
+A gift was given,It glimmered for a brief moment,It glimmers for a brief moment,A gift is received,
+"In the room, there were curved walls",,,"In the room, there is a glass wall",
+"In the room, there were sharp corners",,,"In the room, there are rounded corners",
+"On the walls, there were gray paintings",,,"On the ceiling, there is a window",
+"In the center, there was a statue of a seated figure",,,"In the center, there is a shrine",
+"Outside, there was grass and tall trees",,,"Outside, there is grass and tall trees",
+There was a woman,,,There is a woman,
+There was a man,,,There is a second woman,
+There was a child,,,There is a child,
+There was a dog,,,There is a blue sky,
+Outside there was a green sea,,,Outside there is a green sea,

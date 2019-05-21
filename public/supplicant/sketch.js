@@ -9,26 +9,17 @@ socket.on('connect', function() {
 // DOM elements
 let prompt, options;
 
-// Speech stuff
-let synth = window.speechSynthesis;
-let voices = synth.getVoices();
-
-console.log("HELLO", voices);
-// Get voices asynchronously
-// window.speechSynthesis.onvoiceschanged = function(e) {
-//   voices = synth.getVoices();
-//   console.log("VOICES", voices);
-// };
-
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
   prompt = select("#prompt");
   options = selectAll(".option");
+  console.log(options);
 
   // Select options
   for (let option of options) {
-    option.touchEnded(function() {
+    console.log(option);
+    option.mouseClicked(function() {
       console.log("EMITTING QUERY", this.html());
       socket.emit('query', this.html());
     });
@@ -57,11 +48,6 @@ function setup() {
       setTimeout(() => {
         console.log("QUERY", q);
         let query = createDiv(q).attribute('id', 'query');
-        let sayThis = new SpeechSynthesisUtterance(q);
-        sayThis.voice = voices[44]; // or 10
-        sayThis.rate = 0.8;
-        sayThis.pitch = 1;
-        synth.speak(sayThis);
         // Remove query after a certain about of time
         setTimeout(() => {
           query.remove();

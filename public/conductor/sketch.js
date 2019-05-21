@@ -1,5 +1,6 @@
 // Open and connect output socket
 let socket = io('/conductor');
+let ssocket = io('https://localhost:8001/conductor')
 
 // Listen for confirmation of connection
 socket.on('connect', () => console.log("Connected"));
@@ -8,8 +9,8 @@ socket.on('connect', () => console.log("Connected"));
 socket.on('query', query => speak(query));
 
 // Listen for blop data from server
-socket.on('shake', message => {
-  if (asked()) return;
+ssocket.on('shake', message => {
+  if (current.r == NUM_ROUNDS -1 || !asked()) return;
   let id = message.id;
   let user = users[id] || createNewUser(id);
   let response = user[floor(random(user.length))];
@@ -34,8 +35,10 @@ let supplicants = {};
 // Alt-text
 let rounds = [];
 let current = {
-  round: 0,
-  part: 0
+  r: 0,
+  p: 0,
+  round: null,
+  part: null
 };
 
 // Speech stuff
@@ -44,45 +47,43 @@ let synth = window.speechSynthesis;
 let voices;
 // Get voices asynchronously
 window.speechSynthesis.onvoiceschanged = e => {
-  voices=synth.getVoices();
+  voices = synth.getVoices();
   console.log(voices);
 }
 
 
 // Can respond
 let last_asked;
-// 3 seconds
-let ASK_TH = 1000 *3;
 
 // Ding
 let ding;
 // Timer
 let timer_el;
-let timer=0;
+let timer = 0;
 
 function preload() {
   // Load ding
-  ding = loadSound("ding.wav", () => ding.setVolume(0.5));
+  ding = loadSound("ding.wav", () => ding.setVolume(0.25));
 
   // Load oracle responses
-  yes.push(new Response("yes.wav", "Yes"));
-  yes.push(new Response("probably.wav", "Probably"));
-  yes.push(new Response("maybe.wav", "Maybe"));
-  no.push(new Response("never.wav", "Never"));
-  no.push(new Response("no.wav", "No"));
-  no.push(new Response("maybe.wav", "Maybe"));
-
-  // Part names
-  let p_names = ["Describe what you see", "Make a request", "Tell me what to do", "Tell me a story"];
+  yes.push(new Response("Yes"));
+  yes.push(new Response("Probably"));
+  yes.push(new Response("Maybe"));
+  no.push(new Response("No"));
+  no.push(new Response("Maybe"));
+  no.push(new Response("Possibly"));
 
   // Load alt-text
   let table = loadTable("oracle.csv", function() {
+    console.log(table.getRowCount(), table.getColumnCount());
+    // Get speaking rates for each part
+    let rates= table.getRow(0).arr.map(col => parseFloat(col));
     for (let q = 1; q < table.getRowCount(); q++) {
-      for (let p = 0; p < table.getColumnCount(); p++) {
+      for (let p = 0; p < NUM_PARTS; p++) {
         let query = table.getString(q, p);
         // Create new round
         if (query == "NEW ROUND") {
-          if (p == 0) rounds.push(new Round(p_names[rounds.length]));
+          if (p == 1) rounds.push(new Round(table.getString(q, NUM_PARTS), rates));
         } else if (query.length > 0) rounds[rounds.length - 1].addQuery(p, query);
       }
     }
@@ -95,10 +96,11 @@ function preload() {
       for (let p in parts) {
         let part = parts[p];
         let column = createElement('td');
-        let button = createButton(part.name).addClass('part');
+        let button = createButton(round.name).addClass('part');
         button.attribute('round', r);
         button.attribute('part', p);
-        button.mouseClicked(manualRoll)
+        button.mouseClicked(function(){
+          emitRoll(this.attribute('round'), this.attribute('part'))});
         row.child(column.child(button));
         let queries = part.getQueries();
         for (let q in queries) {
@@ -115,7 +117,10 @@ function preload() {
   });
   // Get timer div
   timer_el = select("#timer");
-  setInterval(()=>{timer--; timer_el.html(timer);}, 1000);
+  setInterval(() => {
+    timer--;
+    timer_el.html(timer);
+  }, 1000);
 }
 
 // Keep track of oracles
@@ -129,44 +134,23 @@ function setup() {
   background(255);
 }
 
-
-// Automatically move through sections??
-function autoRoll() {
-  // Stop auto mode
-  if(!auto) return;
-  console.log(current);
-  // Increment through structure
-  current.part++;
-  if (current.part > 3) {
-    current.part = 0;
-    current.round++;
-    if (current.round > 3) return;
-  }
-  // Emit roll message
-  emitRoll(current.round, current.part);
-
-  // Set next timer
-  let num_queries = rounds[current.round].parts[current.part].queries.length;
-  let timespan = map(num_queries, 1, 10, 1, 5);
-  setTimeout(() => autoRoll(), 1000 * 60 * timespan);
-}
-
-// Manually set section
-function manualRoll() {
-  emitRoll(this.attribute('round'), this.attribute('part'));
-}
-
 // Send out next part to server
 function emitRoll(r, p) {
   console.log("ROLL", r, p);
+  // Update current section
+  current.r = r;
+  current.p = p;
+  current.round = rounds[r];
+  current.part = rounds[r].getPart(p);
   // Play ding
   ding.play();
   // Reset timer
   timer = 120;
-  let data = rounds[r].getPart(p);
-  if (data) {
-    socket.emit('roll', rounds[r].getPart(p));
+  let data = {
+    name: rounds[r].name,
+    queries: rounds[r].getPart(p).getQueries()
   }
+  socket.emit('roll', data);
 }
 
 // Manually send an individual query to all supplicants
@@ -184,9 +168,9 @@ function speak(query) {
   console.log("SAY IT: " + query);
   let sayThis = new SpeechSynthesisUtterance(query);
   sayThis.voice = voices[40]; // or 10
-  sayThis.rate = 0.8;
+  sayThis.rate = current.part ? current.part.rate : 0.8;
   sayThis.pitch = 1;
-  //synth.speak(sayThis);
+  synth.speak(sayThis);
 }
 
 // Has something been asked recently?
@@ -202,5 +186,5 @@ function cue(scene) {
 // Toggle auto-pilot
 function toggleAuto() {
   let state = toggleState('auto');
-  if(state) autoRoll();
+  if (state) autoRoll();
 }

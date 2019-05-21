@@ -1,9 +1,18 @@
 class Response {
-  constructor(soundfile, text, tspeed) {
-    this.soundfile = loadSound(soundfile, ()=>console.log("LOADED: " + text));
+  constructor(text) {
+    this.text = text;
   }
 
-  play() {
-    this.soundfile.play();
+  // Response speak
+  speak() {
+    // Code to utter the string with the right computer voice
+    // Let oracle respond
+    last_asked = millis();
+    console.log("SAY IT: " + query);
+    let sayThis = new SpeechSynthesisUtterance(query);
+    sayThis.voice = voices[40]; // or 10
+    sayThis.rate = random(0.6, 1.2);
+    sayThis.pitch = random(0.6, 1.2);
+    synth.speak(sayThis);
   }
 }

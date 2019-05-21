@@ -5,7 +5,7 @@ const SETTINGS = require('./settings.js');
 const PORT = process.env.PORT || 8000;
 
 // Secure server
-const https = require('https');
+const http = require('http');
 
 // Express web app
 const express = require('express');
@@ -17,12 +17,12 @@ const fs = require('fs');
 
 // SSL Certs
 const certOptions = {
-  key: fs.readFileSync(path.resolve('cert/server.key')),
-  cert: fs.readFileSync(path.resolve('cert/server.crt'))
+  key: fs.readFileSync(path.resolve('cert2/server.key')),
+  cert: fs.readFileSync(path.resolve('cert2/server.crt'))
 }
 
 // Create secure server
-const server = https.createServer(certOptions, app).listen(PORT, function() {
+const server = http.createServer(app).listen(PORT, function() {
   console.log('Server listening at port: ', PORT);
 });
 
@@ -36,7 +36,7 @@ const io = require('socket.io').listen(server);
 let cscene = 'start';
 
 // How many queries does each supplicant receive?
-const NUM_QUERIES = 5;
+const NUM_QUERIES = 4;
 // Keep track of queries submitted
 let queries = [];
 // Current part
@@ -75,7 +75,7 @@ function startQInterval() {
     }
     console.log("DOES IT GET HERE?");
     emitQuery();
-  }, 3000);
+  }, SETTINGS.TIMEOUT);
 }
 
 // Clients in the conductor namespace
@@ -121,6 +121,8 @@ conductors.on('connection', function(socket) {
 
 
 function sendMoreOptions(socket) {
+  // If there are no options...
+  if(!cpart) return;
   // Select 3 unique queries for each supplicant
   // Copy the queries
   let d_queries = [];
@@ -141,12 +143,8 @@ supplicants.on('connection', function(socket) {
   console.log('A supplicant client connected: ' + socket.id);
   // Tell supplicant current scene
   socket.emit('cue', cscene);
-  //console.log(io.nsps['/supplicant'].sockets);
-  // Keep track of supplicants
-  //sdir[socket.id] = socket;
-  // Test query
-  // socket.emit('query', 'Test1');
-  // socket.emit('query', 'Test2');
+  // Send options if we're already in scene 1
+  if(cscene == 'start') sendMoreOptions(socket);
 
   // Tell conductors when a socket has queried
   socket.on('query', function(query) {
@@ -156,7 +154,7 @@ supplicants.on('connection', function(socket) {
     // If there's no query interval, start it
     if (!q_interval) startQInterval();
     // Get new options
-    if(cpart)sendMoreOptions(socket);
+    sendMoreOptions(socket);
   });
 
   // Listen for this output client to disconnect
@@ -191,6 +189,6 @@ oracles.on('connection', function(socket) {
   // Tell all of the output clients this client disconnected
   socket.on('disconnect', function() {
     console.log("An oracle client has disconnected " + socket.id);
-    outputs.emit('disconnected', socket.id);
+    conductors.emit('disconnected', socket.id);
   });
 });

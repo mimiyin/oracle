@@ -1,6 +1,6 @@
 // Universal settings
 const SETTINGS = {
-  TIMEOUT: 3000,
+  TIMEOUT: 5000,
 }
 
 module.exports = SETTINGS;

@@ -1,9 +1,10 @@
 
 class Round {
-  constructor(pname){
+  constructor(rname, rates){
+    this.name = rname;
     this.parts = [];
     for(let p = 0; p < 4; p++) {
-      this.parts.push(new Part(pname));
+      this.parts.push(new Part(rates[p]));
     }
   }
 
@@ -22,8 +23,8 @@ class Round {
 }
 
 class Part {
-  constructor(name){
-    this.name = name;
+  constructor(rate){
+    this.rate = rate;
     this.queries = [];
   }
 

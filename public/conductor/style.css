@@ -24,17 +24,14 @@ button.controls {
   float: left;
   margin: 0 20px 50px 0;
 }
-#auto {
-  float: right;
-  position: relative;
-  right: 2vw;
-}
 
 #timer {
   font-size: 2em;
   display: inline;
-  position: relative;
   top: 5px;
+  float: right;
+  position: relative;
+  right: 2vw;
 }
 
 
