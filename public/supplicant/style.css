@@ -71,7 +71,7 @@ body * {
 
 #query {
   position: fixed;
-  top: 0vh;
+  top: -15vh;
   left: 0;
   width: 90vw;
   height: 115vh;

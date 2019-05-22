@@ -87,6 +87,7 @@ function preload() {
         let column = createElement('td');
         let button = createButton(round.name).addClass('part');
         button.attribute('round', r);
+        button.attribute('part', p);
         button.mouseClicked(function(){
           emitRoll(this.attribute('round'), this.attribute('part'))});
         row.child(column.child(button));
