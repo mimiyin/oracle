@@ -73,7 +73,6 @@ function startQInterval() {
       q_interval = null;
       return;
     }
-    console.log("DOES IT GET HERE?");
     emitQuery();
   }, SETTINGS.TIMEOUT);
 }
@@ -141,11 +140,17 @@ function sendMoreOptions(socket) {
   socket.emit('options', {name : cpart.name, queries : d_queries});
 }
 
+// Counting supplicants
+let count = 0;
+
 // Clients in the query namespace
 const supplicants = io.of('/supplicant');
 // Listen for output clients to connect
 supplicants.on('connection', function(socket) {
   console.log('A supplicant client connected: ' + socket.id);
+  // Label it with a count
+  socket.count = count;
+  count++;
   // Tell supplicant current scene
   socket.emit('cue', cscene);
   // Send options if we're already in scene 1
@@ -153,7 +158,7 @@ supplicants.on('connection', function(socket) {
 
   // Tell conductors when a socket has queried
   socket.on('query', function(query) {
-    console.log("RECEIVED QUERY: ", query);
+    console.log("RECEIVED QUERY: ", socket.count, query);
     // Add it to query queue
     queries.push(query);
     // If there's no query interval, start it

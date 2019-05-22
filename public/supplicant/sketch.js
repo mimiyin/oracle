@@ -6,6 +6,15 @@ socket.on('connect', function() {
   console.log("Connected");
 });
 
+// Testing mode
+let str = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+function generate() {
+  let rand = '';
+  while(rand.length < 10) rand += str.charAt(floor(random(str.length)));
+  return rand;
+}
+setInterval(()=>socket.emit('query', generate()), 1000);
+
 // DOM elements
 let prompt, options;
 
