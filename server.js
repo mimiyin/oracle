@@ -32,8 +32,10 @@ app.use(express.static('public'));
 // Create socket connection
 const io = require('socket.io').listen(server);
 
-//Current scene
-let cscene = 'start';
+// Current scene
+let cscene = 'wait';
+// Has a free-form question been asked?
+let asked = false;
 
 // How many queries does each supplicant receive?
 const NUM_QUERIES = 4;
@@ -98,6 +100,7 @@ conductors.on('connection', function(socket) {
   // Conductor sets query manually
   // No throttling
   socket.on('manual query', query => {
+    console.log("RECEIVED MANUAL QUERY: ", query);
     supplicants.emit('query', query);
   })
 
@@ -140,31 +143,36 @@ function sendMoreOptions(socket) {
   socket.emit('options', {name : cpart.name, queries : d_queries});
 }
 
-// Counting supplicants
-let count = 0;
-
 // Clients in the query namespace
 const supplicants = io.of('/supplicant');
 // Listen for output clients to connect
 supplicants.on('connection', function(socket) {
   console.log('A supplicant client connected: ' + socket.id);
-  // Label it with a count
-  socket.count = count;
-  count++;
+
   // Tell supplicant current scene
   socket.emit('cue', cscene);
   // Send options if we're already in scene 1
   if(cscene == 'start') sendMoreOptions(socket);
 
   // Tell conductors when a socket has queried
-  socket.on('query', function(query) {
-    console.log("RECEIVED QUERY: ", socket.count, query);
+  socket.on('query', (query) => {
+    console.log("RECEIVED QUERY: ", query);
     // Add it to query queue
     queries.push(query);
     // If there's no query interval, start it
     if (!q_interval) startQInterval();
     // Get new options
     sendMoreOptions(socket);
+  });
+
+  // Free-form question from supplicant
+  socket.on('question', (question)=>{
+    if(asked) return;
+    console.log("RECEIVED FIRST QUESTION: ", question);
+    supplicants.emit('query', { asked : true, query: question });
+    chorus.emit('query', question);
+    conductors.emit('query', question);
+    asked = true;
   });
 
   // Listen for this output client to disconnect

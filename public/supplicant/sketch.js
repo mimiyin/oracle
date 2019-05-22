@@ -7,13 +7,13 @@ socket.on('connect', function() {
 });
 
 // Testing mode
-let str = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-function generate() {
-  let rand = '';
-  while(rand.length < 10) rand += str.charAt(floor(random(str.length)));
-  return rand;
-}
-setInterval(()=>socket.emit('query', generate()), 1000);
+// let str = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+// function generate() {
+//   let rand = '';
+//   while(rand.length < 10) rand += str.charAt(floor(random(str.length)));
+//   return rand;
+// }
+// setInterval(()=>socket.emit('query', generate()), 1000);
 
 // DOM elements
 let prompt, options;
@@ -47,19 +47,25 @@ function setup() {
 
 
   // Load query
-  socket.on('query', query => {
-    console.log("QUERY", query);
-    let queryDiv = createDiv(query).attribute('id', 'query');
+  socket.on('query', message => {
+    console.log("QUERY", message);
+    let query = message;
+    if (message.asked) query = message.query;
+    let queryDiv = createDiv(query).addClass('query');
     // Remove query after a certain about of time
-    setTimeout(() => {
-      queryDiv.remove();
-    }, ASK_TH);
+    if (!message.asked) {
+      setTimeout(() => {
+        queryDiv.remove();
+      }, ASK_TH);
+    }
   });
 }
 
 // Cue scene
 function cue(scene) {
+  let queries = selectAll('.query');
   let scenes = selectAll('.scene');
+  for(let q of queries) q.remove();
   for (let s of scenes) s.attribute('hidden', s.attribute('id') != scene);
 }
 
@@ -68,7 +74,5 @@ function emitQ() {
   let el = select('textarea');
   let value = el.elt.value;
   console.log("FREE QUERY: " + value);
-  socket.emit('query', value);
-  // Finish
-  cue('farewell');
+  socket.emit('question', value);
 }

@@ -81,6 +81,7 @@ function preload() {
     for (let r in rounds) {
       let round = rounds[r];
       let row = createElement('tr');
+      tableEl.child(row);
       let parts = round.getParts();
       for (let p in parts) {
         let part = parts[p];
@@ -89,7 +90,11 @@ function preload() {
         button.attribute('round', r);
         button.attribute('part', p);
         button.mouseClicked(function(){
-          emitRoll(this.attribute('round'), this.attribute('part'))});
+          // Toggle selected state
+          if(this.attribute('selected') == "true")this.attribute('selected', "false");
+          else this.attribute('selected', "true");
+          emitRoll(this.attribute('round'), this.attribute('part'));
+        });
         row.child(column.child(button));
         let queries = part.getQueries();
         for (let q in queries) {
