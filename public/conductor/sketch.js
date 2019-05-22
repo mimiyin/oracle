@@ -62,14 +62,6 @@ function preload() {
   // Load ding
   ding = loadSound("ding.wav", () => ding.setVolume(0.25));
 
-  // Load oracle responses
-  yes.push(new Response("Yes"));
-  yes.push(new Response("Probably"));
-  yes.push(new Response("Maybe"));
-  no.push(new Response("No"));
-  no.push(new Response("Maybe"));
-  no.push(new Response("Possibly"));
-
   // Load alt-text
   let table = loadTable("oracle.csv", function() {
     console.log(table.getRowCount(), table.getColumnCount());
@@ -129,6 +121,14 @@ function createNewUser(id) {
 function setup() {
   noCanvas();
   background(255);
+
+  // Load oracle responses
+  yes.push(new Response("Yes"));
+  yes.push(new Response("Probably"));
+  yes.push(new Response("Maybe"));
+  no.push(new Response("No"));
+  no.push(new Response("Maybe"));
+  no.push(new Response("Possibly"));
 }
 
 // Send out next part to server
@@ -182,8 +182,15 @@ function cue(scene) {
   socket.emit('cue', scene);
 }
 
-// Toggle auto-pilot
-function toggleAuto() {
-  let state = toggleState('auto');
-  if (state) autoRoll();
+// Respond
+function keyPressed() {
+  console.log(yes, no, floor(random(yes.length)));
+  if(keyCode == TAB) {
+    if(random(1) > 0.5) {
+      yes[floor(random(yes.length))].speak();
+    }
+    else {
+      no[floor(random(no.length))].speak();
+    }
+  }
 }
