@@ -148,7 +148,7 @@ function emitRoll(r, p) {
   // Play ding
   ding.play();
   // Reset timer
-  timer = 120;
+  timer = PART_LEN;
   let data = {
     name: rounds[r].name,
     queries: rounds[r].getPart(p).getQueries()
@@ -190,13 +190,13 @@ function cue(scene) {
 
 // Respond
 function keyPressed() {
-  console.log(yes, no, floor(random(yes.length)));
-  if(keyCode == TAB) {
-    if(random(1) > 0.5) {
-      yes[floor(random(yes.length))].speak();
-    }
-    else {
-      no[floor(random(no.length))].speak();
-    }
+  if(keyCode != TAB) return;
+  let rindex = floor(random(yes.length));
+  function speakRandomly(opts) {
+    let response = opts[rindex];
+    console.log("RESPONDING: ", response.text);
+    response.speak();
   }
+  speakRandomly(random(1) > 0.5 ? yes : no);
+
 }

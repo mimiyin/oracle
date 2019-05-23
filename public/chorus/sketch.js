@@ -9,7 +9,7 @@ socket.on('connect', function() {
 // Speech stuff
 let synth = window.speechSynthesis;
 let voices = synth.getVoices();;
-// Get voices asynchronously
+// Get voices asynchronously for Chrome
 window.speechSynthesis.onvoiceschanged = e => {
   voices = synth.getVoices();
   console.log(voices);
@@ -32,10 +32,14 @@ function setup() {
     sayThis.voice = voices[40]; // or 10
     sayThis.rate = rate;
     sayThis.pitch = 1;
+
+    // Pick a random delay for this voice
+    randomSeed(0);
+    let rdelay = random(100);
     //synth.speak(sayThis);
     setTimeout(() => {
       console.log("SPEAKING NOW: ", query);
       synth.speak(sayThis);
-    }, random(50));
+    }, rdelay);
   });
 }
