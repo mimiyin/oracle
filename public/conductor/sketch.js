@@ -170,7 +170,7 @@ function speak(query) {
   last_asked = millis();
   console.log("SAY IT: " + query);
   let sayThis = new SpeechSynthesisUtterance(query);
-  sayThis.voice = voices[40]; // or 10
+  sayThis.voice = voices[VOICE_CHROME]; // or 10
   sayThis.rate = current.part ? current.part.rate : 0.8;
   sayThis.pitch = 1;
   //setTimeout(()=>synth.speak(sayThis), random(50));

@@ -10,10 +10,8 @@ socket.on('connect', function() {
 let synth = window.speechSynthesis;
 let voices = synth.getVoices();;
 // Get voices asynchronously for Chrome
-window.speechSynthesis.onvoiceschanged = e => {
-  voices = synth.getVoices();
-  console.log(voices);
-}
+// Get voices asynchronously
+window.speechSynthesis.onvoiceschanged = e => voices = synth.getVoices();
 
 function setup() {
   // Listen for blop data from server
@@ -29,7 +27,7 @@ function setup() {
     }, ASK_TH);
 
     let sayThis = new SpeechSynthesisUtterance(query);
-    sayThis.voice = voices[40]; // or 10
+    sayThis.voice = voices[VOICE_CHROME]; // or 10
     sayThis.rate = rate;
     sayThis.pitch = 1;
 

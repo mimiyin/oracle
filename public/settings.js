@@ -5,3 +5,6 @@ let NUM_PARTS = 4;
 
 // Length of each part in seconds
 let PART_LEN = 120;
+
+let VOICE_CHROME = 44;
+let VOICE_SAFARI = 40;
