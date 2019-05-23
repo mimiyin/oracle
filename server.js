@@ -44,7 +44,6 @@ let queries = [];
 // Current part
 let cpart;
 
-
 // Receive query
 function receiveQuery(query) {
   // Add it to query queue
@@ -177,9 +176,7 @@ supplicants.on('connection', function(socket) {
 
   // Listen for this output client to disconnect
   socket.on('disconnect', function() {
-    console.log("A query client has disconnected " + socket.id);
-    //sdir[socket.id] = null;
-    //delete sdir[socket.id];
+    console.log("A supplicant client has disconnected " + socket.id);
   });
 });
 
@@ -187,7 +184,7 @@ supplicants.on('connection', function(socket) {
 const chorus = io.of('/chorus');
 // Listen for input clients to connect
 chorus.on('connection', function(socket) {
-  console.log('An oracle client connected: ' + socket.id);
+  console.log('A chorus client connected: ' + socket.id);
 
   // Listen for this input client to disconnect
   // Tell all of the output clients this client disconnected

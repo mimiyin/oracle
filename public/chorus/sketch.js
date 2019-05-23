@@ -32,6 +32,10 @@ function setup() {
     sayThis.voice = voices[40]; // or 10
     sayThis.rate = rate;
     sayThis.pitch = 1;
-    setTimeout(() => synth.speak(sayThis), random(100));
+    //synth.speak(sayThis);
+    setTimeout(() => {
+      console.log("SPEAKING NOW: ", query);
+      synth.speak(sayThis);
+    }, random(50));
   });
 }

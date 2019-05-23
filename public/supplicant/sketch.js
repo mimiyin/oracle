@@ -1,10 +1,5 @@
 // Open and connect supplicant socket
-let socket = io('/supplicant');
-
-// Listen for confirmation of connection
-socket.on('connect', function() {
-  console.log("Connected");
-});
+let socket;
 
 // Testing mode
 // let str = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -22,6 +17,14 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
   prompt = select("#prompt");
   options = selectAll(".option");
+
+  // Connect socket
+  socket = io('/supplicant');
+
+  // Listen for confirmation of connection
+  socket.on('connect', function() {
+    console.log("Connected");
+  });
 
   // Select options
   for (let option of options) {

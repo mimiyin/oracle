@@ -173,7 +173,7 @@ function speak(query) {
   sayThis.voice = voices[40]; // or 10
   sayThis.rate = current.part ? current.part.rate : 0.8;
   sayThis.pitch = 1;
-  setTimeout(()=>synth.speak(sayThis), random(100));
+  //setTimeout(()=>synth.speak(sayThis), random(50));
   // Emit to chorus whatever is said
   socket.emit('cue chorus', {rate : sayThis.rate, query : query });
 }
