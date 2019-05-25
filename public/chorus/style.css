@@ -1,22 +1,27 @@
+@font-face {
+  font-family: "Custom";
+  src: url("../fonts/WorkSans-Medium.ttf");
+}
+
 body {
   height: 100vh;
   margin: 0px;
   font-family: sans-serif;
-  overflow: hidden;
   background: coral;
 }
 
 #query {
-  position: fixed;
-  top: 0vh;
-  left: 0;
-  width: 90vw;
-  height: 100vh;
   padding: 0 5vw;
-  font-size: 20vw;
+  font-size: 10vw;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  font-family: "Custom";
   background-color: chartreuse;
+}
+
+.fullscreen {
+  width: 90vw;
+  height: 100vh;
 }

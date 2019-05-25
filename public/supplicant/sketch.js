@@ -11,10 +11,13 @@ let socket;
 // setInterval(()=>socket.emit('query', generate()), 1000);
 
 // DOM elements
-let prompt, options;
+let start, prompt, options;
+// How much to delay on top of ASK_TH
+let delay = 0;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
+  start = select("#start");
   prompt = select("#prompt");
   options = selectAll(".option");
 
@@ -26,13 +29,29 @@ function setup() {
     console.log("Connected");
   });
 
+  // Toggle disabled options
+  function disableOptions() {
+    let ts = DISABLED_TS + delay;
+    console.log("DISABLE TS: ", ts);
+    for (let option of options) {
+      option.attribute('disabled', "true");
+      setTimeout(() => option.attribute('disabled', "false"), ts);
+    }
+  }
+
   // Select options
   for (let option of options) {
     option.mouseClicked(function() {
-      console.log("EMITTING QUERY", this.html());
-      socket.emit('query', this.html());
+      let query = this.html();
+      console.log("EMITTING QUERY", query);
+      socket.emit('query', query);
+      delay += DELAY_INCREMENT;
+      disableOptions();
     });
   }
+
+  // Set disabled to true right away
+  disableOptions();
 
   // Wait to cue scene
   socket.on('cue', (scene) => cue(scene));
@@ -47,35 +66,23 @@ function setup() {
       options[o].html(option);
     }
   });
-
-
-  // Load query
-  socket.on('query', message => {
-    console.log("QUERY", message);
-    let query = message;
-    if (message.asked) query = message.query;
-    let queryDiv = createDiv(query).addClass('query');
-    // Remove query after a certain about of time
-    if (!message.asked) {
-      setTimeout(() => {
-        queryDiv.remove();
-      }, ASK_TH);
-    }
-  });
 }
 
 // Cue scene
 function cue(scene) {
+  // Reset delay
+  delay = 0;
   let queries = selectAll('.query');
   let scenes = selectAll('.scene');
-  for(let q of queries) q.remove();
+  for (let q of queries) q.remove();
   for (let s of scenes) s.attribute('hidden', s.attribute('id') != scene);
 }
 
 //Emit question
 function emitQ() {
   let el = select('textarea');
-  let value = el.elt.value;
-  console.log("FREE QUERY: " + value);
-  socket.emit('question', value);
+  let query = el.elt.value;
+  console.log("FREE QUERY: " + query);
+  socket.emit('query', query);
+
 }

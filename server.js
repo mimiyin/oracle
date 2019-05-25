@@ -34,8 +34,6 @@ const io = require('socket.io').listen(server);
 
 // Current scene
 let cscene = 'wait';
-// Has a free-form question been asked?
-let asked = false;
 
 // How many queries does each supplicant receive?
 const NUM_QUERIES = 4;
@@ -59,8 +57,8 @@ let q_interval;
 function startQInterval() {
   // Emit
   function emitQuery(){
-    // Remove oldest query
-    let query = queries.shift();
+    // Remove the last query
+    let query = queries.pop();
     conductors.emit('query', query);
     supplicants.emit('query', query);
     console.log("NUM Qs LEFT: ", queries.length);
@@ -162,16 +160,8 @@ supplicants.on('connection', function(socket) {
     if (!q_interval) startQInterval();
     // Get new options
     sendMoreOptions(socket);
-  });
-
-  // Free-form question from supplicant
-  socket.on('question', (question)=>{
-    if(asked) return;
-    console.log("RECEIVED FIRST QUESTION: ", question);
-    supplicants.emit('query', { asked : true, query: question });
-    chorus.emit('query', question);
-    conductors.emit('query', question);
-    asked = true;
+    // Remove oldest query after we've reached 40 (12000 / 3000)
+    if(queries.length > PART_LEN * 1000 / QUERY_TS) queries.shift();
   });
 
   // Listen for this output client to disconnect

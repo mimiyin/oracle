@@ -14,6 +14,7 @@ let voices = synth.getVoices();;
 window.speechSynthesis.onvoiceschanged = e => voices = synth.getVoices();
 
 function setup() {
+  noCanvas();
   // Listen for blop data from server
   socket.on('query', (message) => {
     let rate = message.rate;
@@ -21,13 +22,30 @@ function setup() {
     // Code to utter the string with the right computer voice
     console.log("SAY IT: " + query);
     let queryDiv = createDiv(query).attribute('id', 'query');
+    let fs = 0;
+    function scaleFS(el) {
+      console.log(el.size().width, );
+      // Make it as tall as the window
+      while(el.size().height < windowHeight - 150) {
+        fs++;
+        el.style('font-size', fs + 'px');
+      }
+      // Then make sure it fits width-wise
+      while(el.size().width > windowWidth) {
+        fs--;
+        el.style('font-size', fs + 'px');
+      }
+      el.addClass('fullscreen');
+    }
+    // Scale font-size
+    scaleFS(queryDiv);
     // Remove query after a certain about of time
     setTimeout(() => {
       queryDiv.remove();
-    }, ASK_TH);
+    }, QUERY_TS);
 
     let sayThis = new SpeechSynthesisUtterance(query);
-    sayThis.voice = voices[VOICE_CHROME]; // or 10
+    sayThis.voice = voices[VOICE_SAFARI]; // or 10
     sayThis.rate = rate;
     sayThis.pitch = 1;
 

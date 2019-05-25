@@ -1,7 +1,12 @@
+@font-face {
+  font-family: "Custom";
+  src: url("../fonts/WorkSans-Medium.ttf");
+}
+
 body {
   height: 100vh;
   margin: 0px;
-  font-family: sans-serif;
+  font-family: "Custom";
   overflow: hidden;
 }
 
@@ -26,7 +31,7 @@ body * {
 }
 
 .bookend p {
-  color: tan;
+  color: salmon;
   opacity: 1;
   animation: fade 3s alternate infinite;
 }
@@ -65,13 +70,22 @@ body * {
   width: 90vw;
   height: auto;
   float: left;
-  background: salmon;
+  background: tomato;
   /* border: 5vw outset deeppink; */
   padding: 1vh;
   margin: 2vh 5vw;
   display: flex;
   text-align: left !important;
   justify-content: left;
+}
+
+[disabled=true] {
+  pointer-events: none;
+}
+
+.option[disabled=true] {
+  animation: fade 3s ease-out 1;
+  background: salmon;
 }
 
 .query {
@@ -89,50 +103,46 @@ body * {
   background-color: chartreuse;
 }
 
-#end {
+#write {
   align-items: center;
   justify-content: flex-center;
   flex-flow: column;
-  background: aquamarine;
+  background: salmon;
 }
 
-#end p {
+#write p {
   font-size: 6vw;
-  color: tan;
+  color: yellow;
   position: relative;
 }
 
-#end div {
+#write div {
   width: 100vw;
 }
 
-#end textarea {
+#write textarea {
   width: 90vw;
   height: 50vh;
   resize: none;
-  background: greenyellow;
+  background: white;
 }
 
-#end button {
-  color: tan;
+#write button {
+  color: yellow;
   width: 100vw;
   background: none;
   border: none;
   height: 2em;
 }
 
-#farewell {
+#end {
   background: orangered;
 }
 
-#slow {
-  background: lightgray;
-}
-
-#slow p#slowdown {
+#turns p#taketurns {
   animation: fade 3s linear;
 }
 
-#slow p#please {
+#turns p#please {
   animation: fade 10s ease-in;
 }

@@ -13,28 +13,28 @@
 <body>
   <script src="../settings.js"></script>
   <script src="sketch.js"></script>
-  <div id="end" class="scene" hidden=true>
-    <p>Ask whatever you want...</p>
-    <div>
-      <textarea type="text"></textarea>
-      <button onclick="emitQ()">Submit</button>
-    </div>
-  </div>
   <div id="wait" class="scene bookend" hidden=false>
     <p>We are waiting to begin...</p>
   </div>
-  <div id="start" class="scene" hidden=true>
+  <div id="start" class="scene" hidden=true disabled=false>
     <div id="prompt"></div>
     <div class="option"></div>
     <div class="option"></div>
     <div class="option"></div>
     <div class="option"></div>
   </div>
-  <div id="farewell" class="scene bookend" hidden=true>
+  <div id="write" class="scene" hidden=true>
+    <p>Ask me...</p>
+    <div>
+      <textarea type="text"></textarea>
+      <button onclick="emitQ()">Submit</button>
+    </div>
+  </div>
+  <div id="end" class="scene bookend" hidden=true>
     <p>The end.</p>
   </div>
-  <div id="slow" class="scene" hidden=true>
-    <p id="slowdown">Slow down...</p>
+  <div id="turns" class="scene" hidden=true>
+    <p id="taketurns">Take turns...</p>
     <p id="please">Please</p>
   </div>
 </body>
