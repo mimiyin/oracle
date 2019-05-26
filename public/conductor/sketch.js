@@ -1,7 +1,6 @@
 // Open and connect output socket
 let socket = io('/conductor');
-let ssocket = io('https://localhost:8001/conductor')
-//let ssocket = io('https://127.0.0.1:8001/conductor')
+let ssocket = io('https://' + document.location.hostname + ':8001/conductor');
 
 // Listen for confirmation of connection
 socket.on('connect', () => console.log("Connected"));
