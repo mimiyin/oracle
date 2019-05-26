@@ -11,7 +11,7 @@ socket.on('query', query => speak(query));
 
 // Listen for blop data from server
 ssocket.on('shake', message => {
-  if (current.r == NUM_ROUNDS - 1 || !asked()) return;
+  //if (current.r == NUM_ROUNDS - 1 || !asked()) return;
   let id = message.id;
   let user = users[id] || createNewUser(id);
   let response = user[floor(random(user.length))];
