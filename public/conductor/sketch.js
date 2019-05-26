@@ -15,7 +15,7 @@ ssocket.on('shake', message => {
   let id = message.id;
   let user = users[id] || createNewUser(id);
   let response = user[floor(random(user.length))];
-  response.play();
+  response.speak();
 });
 
 // Remove disconnected users
@@ -206,7 +206,7 @@ function utter(text, voice, rate, pitch, volume, delay) {
 
 // Has something been asked recently?
 function asked() {
-  return millis() - last_asked < ASK_TH;
+  return millis() - last_asked < ASK_TS;
 }
 
 // Toggle start
