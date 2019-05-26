@@ -43,7 +43,6 @@ function setup() {
     function scaleFS(el) {
       // Make it as tall as the window
       while (el.size().height < windowHeight - 150) {
-        console.log(el.size().width, windowWidth);
         fs++;
         el.style('font-size', fs + 'px');
       }
@@ -78,7 +77,7 @@ function speak(text, rate, pitch, volume, delay) {
   // Delay the speech by some random amount
   if (delay) {
     setTimeout(() => {
-      console.log("SPEAKING NOW: ", query);
+      console.log("SPEAKING NOW: ", text);
       synth.speak(sayThis);
     }, random(SPEECH_DELAY));
   } else synth.speak(sayThis);

@@ -178,19 +178,19 @@ function babble(query) {
 
 // Prepare to speak selected query
 function speak(query) {
-  if(!local) return;
   // Code to utter the string with the right computer voice
   // Let oracle respond
   last_asked = millis();
   console.log("SAY IT: " + query);
   let rate = current.part ? current.part.rate : 0.8;
   let pitch = 1;
-  utter(query, VOICE_CHROME, rate, pitch, 1, true);
   // Emit to chorus whatever is said
   socket.emit('cue chorus', {
     rate: rate,
     query: query
   });
+  // Only speak if server is screwed
+  if(local) utter(query, VOICE_CHROME, rate, pitch, 1, true);
 }
 
 // Actually utter the text
