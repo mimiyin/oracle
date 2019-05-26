@@ -6,11 +6,12 @@ let ssocket = io('https://localhost:8001/conductor')
 socket.on('connect', () => console.log("Connected"));
 
 // Speak
+socket.on('babble', query => babble(query));
 socket.on('query', query => speak(query));
 
 // Listen for blop data from server
 ssocket.on('shake', message => {
-  if (current.r == NUM_ROUNDS -1 || !asked()) return;
+  if (current.r == NUM_ROUNDS - 1 || !asked()) return;
   let id = message.id;
   let user = users[id] || createNewUser(id);
   let response = user[floor(random(user.length))];
@@ -46,7 +47,10 @@ let synth = window.speechSynthesis;
 
 let voices = synth.getVoices();
 // Get voices asynchronously
-window.speechSynthesis.onvoiceschanged = e => voices = synth.getVoices();
+window.speechSynthesis.onvoiceschanged = e => {
+  voices = synth.getVoices();
+  console.log(voices);
+}
 
 
 // Can respond
@@ -58,6 +62,9 @@ let ding;
 let timer_el;
 let timer = 0;
 
+// Go completely local
+let local = false;
+
 function preload() {
   // Load ding
   ding = loadSound("ding.wav", () => ding.setVolume(0.25));
@@ -66,7 +73,7 @@ function preload() {
   let table = loadTable("oracle.csv", function() {
     console.log(table.getRowCount(), table.getColumnCount());
     // Get speaking rates for each part
-    let rates= table.getRow(0).arr.map(col => parseFloat(col));
+    let rates = table.getRow(0).arr.map(col => parseFloat(col));
     for (let q = 1; q < table.getRowCount(); q++) {
       for (let p = 0; p < NUM_PARTS; p++) {
         let query = table.getString(q, p);
@@ -89,9 +96,9 @@ function preload() {
         let button = createButton(round.name).addClass('part');
         button.attribute('round', r);
         button.attribute('part', p);
-        button.mouseClicked(function(){
+        button.mouseClicked(function() {
           // Toggle selected state
-          if(this.attribute('selected') == "true")this.attribute('selected', "false");
+          if (this.attribute('selected') == "true") this.attribute('selected', "false");
           else this.attribute('selected', "true");
           emitRoll(this.attribute('round'), this.attribute('part'));
         });
@@ -163,19 +170,38 @@ function sendQuery() {
   speak(query);
 }
 
-// Conductor speak
+// Prepare to speak background babbling
+function babble(query) {
+  if(local) return;
+  utter(query, BABBLE_CHROME, BABBLE_RATE, BABBLE_PITCH, BABBLE_VOLUME, false);
+}
+
+// Prepare to speak selected query
 function speak(query) {
+  if(!local) return;
   // Code to utter the string with the right computer voice
   // Let oracle respond
   last_asked = millis();
   console.log("SAY IT: " + query);
-  let sayThis = new SpeechSynthesisUtterance(query);
-  sayThis.voice = voices[VOICE_CHROME]; // or 10
-  sayThis.rate = current.part ? current.part.rate : 0.8;
-  sayThis.pitch = 1;
-  //setTimeout(()=>synth.speak(sayThis), random(SPEAK_DELAY));
+  let rate = current.part ? current.part.rate : 0.8;
+  let pitch = 1;
+  utter(query, VOICE_CHROME, rate, pitch, 1, true);
   // Emit to chorus whatever is said
-  socket.emit('cue chorus', {rate : sayThis.rate, query : query });
+  socket.emit('cue chorus', {
+    rate: rate,
+    query: query
+  });
+}
+
+// Actually utter the text
+function utter(text, voice, rate, pitch, volume, delay) {
+  let sayThis = new SpeechSynthesisUtterance(text);
+  sayThis.voice = voices[voice]; // or 10
+  sayThis.rate = rate;
+  sayThis.pitch = pitch;
+  sayThis.volume = volume;
+  if (delay) setTimeout(() => synth.speak(sayThis), random(SPEECH_DELAY));
+  else synth.speak(sayThis);
 }
 
 // Has something been asked recently?
@@ -190,13 +216,18 @@ function cue(scene) {
 
 // Respond
 function keyPressed() {
-  if(keyCode != TAB) return;
-  let rindex = floor(random(yes.length));
-  function speakRandomly(opts) {
-    let response = opts[rindex];
-    console.log("RESPONDING: ", response.text);
-    response.speak();
+  switch (keyCode) {
+    case TAB:
+      let rindex = floor(random(yes.length));
+      function speakRandomly(opts) {
+        let response = opts[rindex];
+        console.log("RESPONDING: ", response.text);
+        response.speak();
+      }
+      speakRandomly(random(1) > 0.5 ? yes : no);
+      break;
+    case ENTER || RETURN:
+      local = !local;
+      break;
   }
-  speakRandomly(random(1) > 0.5 ? yes : no);
-
 }

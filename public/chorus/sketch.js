@@ -16,14 +16,14 @@ window.speechSynthesis.onvoiceschanged = e => voices = synth.getVoices();
 function setup() {
   noCanvas();
   // Container for query texts
-  let queryText = select('#query-text');
+  let babble = select('#babble');
   // Display the query text right away
-  socket.on('query text', (query)=>{
-    let querySpan = createSpan(query).addClass('query-text');
-    queryText.child(querySpan);
+  socket.on('babble', (query) => {
+    let babbleSpan = createSpan(query).addClass('babble');
+    babble.child(babbleSpan);
     // Remove query after a certain about of time
     setTimeout(() => {
-      querySpan.remove();
+      babbleSpan.remove();
     }, QUERY_TEXT_TS);
   });
 
@@ -39,15 +39,16 @@ function setup() {
     console.log(queryDiv.size());
     // Size the font to the screen
     let fs = 0;
+
     function scaleFS(el) {
       // Make it as tall as the window
-      while(el.size().height < windowHeight - 150) {
+      while (el.size().height < windowHeight - 150) {
         console.log(el.size().width, windowWidth);
         fs++;
         el.style('font-size', fs + 'px');
       }
       // Then make sure it fits width-wise
-      while(el.size().width > windowWidth) {
+      while (el.size().width > windowWidth) {
         fs--;
         el.style('font-size', fs + 'px');
       }
@@ -62,19 +63,23 @@ function setup() {
       queryDiv.remove();
       body.removeClass('chartreuse');
     }, QUERY_TS);
+    // Say it
+    speak(query, rate, 1, 1, true);
+  });
+}
 
-    let sayThis = new SpeechSynthesisUtterance(query);
-    sayThis.voice = voices[VOICE_SAFARI]; // or 10
-    sayThis.rate = rate;
-    sayThis.pitch = 1;
+function speak(text, rate, pitch, volume, delay) {
+  let sayThis = new SpeechSynthesisUtterance(text);
+  sayThis.voice = voices[VOICE_SAFARI]; // or 10
+  sayThis.rate = rate;
+  sayThis.pitch = pitch;
+  sayThis.volume = volume;
 
-    // Pick a random delay for this voice
-    randomSeed(0);
-    let rdelay = random(SPEAK_DELAY);
-    //synth.speak(sayThis);
+  // Delay the speech by some random amount
+  if (delay) {
     setTimeout(() => {
       console.log("SPEAKING NOW: ", query);
       synth.speak(sayThis);
-    }, rdelay);
-  });
+    }, random(SPEECH_DELAY));
+  } else synth.speak(sayThis);
 }

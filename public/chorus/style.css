@@ -11,7 +11,7 @@ body {
   font-family: "Custom";
 }
 
-#query-text {
+#babble {
   position: fixed;
   width: 100vw;
   bottom: 0vh;
@@ -19,7 +19,7 @@ body {
   z-index: -1;
 }
 
-.query-text {
+.babble {
   font-size: 2em;
   color: tan;
   padding: 0 0.1em;

@@ -16,7 +16,15 @@ let NUM_PARTS = 4;
 // Length of each part in seconds
 let PART_LEN = 120;
 
-let VOICE_CHROME = 44;
-let VOICE_SAFARI = 40;
+// Query oice
+let VOICE_CHROME = 40;
+let VOICE_SAFARI = 44;
+// Range for delaying speech for chorus effect
+let SPEECH_DELAY = 100;
 
-let SPEAK_DELAY = 100;
+
+// Babble voice
+let BABBLE_CHROME = 40;
+let BABBLE_RATE = 1.2;
+let BABBLE_PITCH = 1;
+let BABBLE_VOLUME = 0.05;

@@ -73,7 +73,7 @@ function startQInterval() {
       return;
     }
     emitQuery();
-  }, SETTINGS.TIMEOUT);
+  }, SETTINGS.QUERY_TS);
 }
 
 // Clients in the conductor namespace
@@ -157,7 +157,8 @@ supplicants.on('connection', function(socket) {
   socket.on('query', (query) => {
     console.log("RECEIVED QUERY: ", query);
     // Send query as text right away
-    chorus.emit('query text', query);
+    chorus.emit('babble', query);
+    conductors.emit('babble', query);
     // Add it to query queue
     queries.push(query);
     // If there's no query interval, start it
@@ -165,7 +166,7 @@ supplicants.on('connection', function(socket) {
     // Get new options
     sendMoreOptions(socket);
     // Remove oldest query after we've reached 40 (12000 / 3000)
-    if(queries.length > 40) queries.shift();
+    if(queries.length > SETTINGS.QMAX) queries.shift();
   });
 
   // Listen for this output client to disconnect

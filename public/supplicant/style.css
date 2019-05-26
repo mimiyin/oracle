@@ -71,7 +71,6 @@ body * {
   height: auto;
   float: left;
   background: tomato;
-  /* border: 5vw outset deeppink; */
   padding: 1vh;
   margin: 2vh 5vw;
   display: flex;
@@ -86,21 +85,7 @@ body * {
 .option[disabled=true] {
   animation: fade 3s ease-out 1;
   background: salmon;
-}
-
-.query {
-  position: fixed;
-  top: -15vh;
-  left: 0;
-  width: 90vw;
-  height: 115vh;
-  padding: 0 5vw;
-  font-size: 20vw;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  background-color: chartreuse;
+  color: rgba(0, 0, 0, 0.5);
 }
 
 #write {
