@@ -1,7 +1,7 @@
 // Open and connect output socket
 let socket = io('/conductor');
 //let ssocket = io('https://localhost:8001/conductor')
-let ssocket = io('https://localhost:8001/conductor')
+let ssocket = io('https://o.nuum.co:8001/conductor')
 
 // Listen for confirmation of connection
 socket.on('connect', () => console.log("Connected"));
