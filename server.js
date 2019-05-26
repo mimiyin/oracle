@@ -98,7 +98,9 @@ conductors.on('connection', function(socket) {
   // No throttling
   socket.on('manual query', query => {
     console.log("RECEIVED MANUAL QUERY: ", query);
-    supplicants.emit('query', query);
+    // Send query as text right away
+    chorus.emit('query text', query);
+    // supplicants.emit('query', query);
   })
 
   // Cue chorus
@@ -154,6 +156,8 @@ supplicants.on('connection', function(socket) {
   // Tell conductors when a socket has queried
   socket.on('query', (query) => {
     console.log("RECEIVED QUERY: ", query);
+    // Send query as text right away
+    chorus.emit('query text', query);
     // Add it to query queue
     queries.push(query);
     // If there's no query interval, start it
@@ -161,7 +165,7 @@ supplicants.on('connection', function(socket) {
     // Get new options
     sendMoreOptions(socket);
     // Remove oldest query after we've reached 40 (12000 / 3000)
-    if(queries.length > PART_LEN * 1000 / QUERY_TS) queries.shift();
+    if(queries.length > 40) queries.shift();
   });
 
   // Listen for this output client to disconnect

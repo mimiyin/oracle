@@ -8,20 +8,40 @@ body {
   margin: 0px;
   font-family: sans-serif;
   background: coral;
+  font-family: "Custom";
 }
 
-#query {
+#query-text {
+  position: fixed;
+  width: 100vw;
+  bottom: 0vh;
+  left: 0vw;
+  z-index: -1;
+}
+
+.query-text {
+  font-size: 2em;
+  color: tan;
+  padding: 0 0.1em;
+  word-wrap: break-word;
+
+}
+
+.query {
+  float: left;
   padding: 0 5vw;
-  font-size: 10vw;
+  font-size: 1em;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  font-family: "Custom";
-  background-color: chartreuse;
 }
 
 .fullscreen {
   width: 90vw;
   height: 100vh;
+}
+
+.chartreuse {
+  background: chartreuse;
 }
