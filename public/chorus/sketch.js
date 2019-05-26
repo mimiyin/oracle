@@ -35,6 +35,8 @@ function setup() {
     let query = message.query;
     // Code to utter the string with the right computer voice
     console.log("SAY IT: " + query);
+    let qds = selectAll('.query');
+    for(let qd of qds) qd.remove();
     let queryDiv = createDiv(query).addClass('query');
     console.log(queryDiv.size());
     // Size the font to the screen
