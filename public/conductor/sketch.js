@@ -11,6 +11,7 @@ socket.on('query', query => speak(query));
 
 // Listen for blop data from server
 ssocket.on('shake', message => {
+  console.log("ORACLE SHOOK");
   //if (current.r == NUM_ROUNDS - 1 || !asked()) return;
   let id = message.id;
   let user = users[id] || createNewUser(id);
