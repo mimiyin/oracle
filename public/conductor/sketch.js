@@ -164,13 +164,18 @@ function emitRoll(r, p) {
     queries: rounds[r].getPart(p).getQueries()
   }
   socket.emit('roll', data);
+  // Send rate to chorus
+  socket.emit('rate', current.part.rate);
 }
 
 // Manually send an individual query to all supplicants
 function manualBroadcast() {
   let query = this.attribute('query');
   let rate = this.attribute('rate');
-  cueChorus(query, rate);
+  socket.emit('cue chorus', query);
+  socket.emit('rate', rate);
+  // Only speak if server is screwed
+  if (local) speak(query, VOICE_CHROME, rate, pitch, 1, true);
 }
 
 // Prepare to speak selected query
@@ -181,20 +186,8 @@ function broadcast(query) {
   console.log("SAY IT: " + query);
   let rate = current.part ? current.part.rate : 0.8;
   let pitch = 1;
-
-  // Cue chorus
-  cueChorus(query, rate);
-}
-
-// Send query to chorus
-function cueChorus(query, rate) {
-  console.log(query, rate);
-  socket.emit('cue chorus', {
-    rate: rate,
-    query: query
-  });
-  // Only speak if server is screwed
-  if (local) speak(query, VOICE_CHROME, rate, pitch, 1, true);
+  // Speak queries from supplicants
+  //speak(query, VOICE_CHROME, rate, pitch, 1, true);
 }
 
 // Actually utter the text

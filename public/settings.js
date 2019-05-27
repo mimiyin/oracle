@@ -28,6 +28,3 @@ let BABBLE_CHROME = 40;
 let BABBLE_RATE = 1.2;
 let BABBLE_PITCH = 1;
 let BABBLE_VOLUME = 0.05;
-
-// Speech rates
-let rates = [];

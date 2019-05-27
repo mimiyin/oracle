@@ -33,11 +33,9 @@ function setup() {
   // Container for spoken queries
   let body = select('body');
   // Listen for blop data from server
-  socket.on('query', (message) => {
-    let rate = message.rate;
-    let query = message.query;
+  socket.on('query', (query) => {
     // Code to utter the string with the right computer voice
-    console.log("SAY IT: ", query, "RATE: ", rate);
+    console.log("SAY IT: ", query);
     let qds = selectAll('.query');
     for(let qd of qds) qd.remove();
     let queryDiv = createDiv(query).addClass('query');
@@ -75,6 +73,12 @@ function setup() {
     console.log("SCENE: ", scene);
     if(scene == 'end') createDiv("The end.").addClass('end').addClass('fullscreen');
   });
+
+  // Cue rate
+  socket.on('rate', (r)=>{
+    console.log("NEW RATE: ", r);
+    rate = r;
+  })
 }
 
 function speak(text, rate, pitch, volume, delay) {

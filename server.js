@@ -59,6 +59,7 @@ function startQInterval() {
   function emitQuery(){
     // Remove the last query
     let query = queries.pop();
+    chorus.emit('query', query);
     conductors.emit('query', query);
     supplicants.emit('query', query);
     console.log("NUM Qs LEFT: ", queries.length);
@@ -83,25 +84,18 @@ conductors.on('connection', function(socket) {
   console.log('A conductor client connected: ' + socket.id);
 
   // Toggle start screen
-  socket.on('cue', (scene)=>{
+  socket.on('cue', scene=>{
     console.log("SCENE: " + scene);
     cscene = scene;
     supplicants.emit('cue', scene);
     chorus.emit('cue', scene);
   });
 
-  // Conductor can speak too
-  socket.on('query', query => {
-    receiveQuery(query);
-  });
-
   // Cue chorus
-  socket.on('cue chorus', message => {
-    chorus.emit('query', message);
-  });
+  socket.on('cue chorus', query=>chorus.emit('query', query));
 
   // Let supplicants go
-  socket.on('roll', function(part) {
+  socket.on('roll', part=>{
     console.log("ROLL");
     cpart = part;
     let sdir = io.nsps['/supplicant'].sockets;
@@ -111,8 +105,14 @@ conductors.on('connection', function(socket) {
     }
   });
 
+  // Tell chorus rate
+  socket.on('rate', rate =>{
+    console.log("New rate.")
+    chorus.emit('rate', rate);
+  });
+
   // Listen for this output client to disconnect
-  socket.on('disconnect', function() {
+  socket.on('disconnect', ()=>{
     console.log("A conductor client has disconnected " + socket.id);
   });
 });
@@ -137,7 +137,7 @@ function sendMoreOptions(socket) {
 // Clients in the query namespace
 const supplicants = io.of('/supplicant');
 // Listen for output clients to connect
-supplicants.on('connection', function(socket) {
+supplicants.on('connection', socket=>{
   console.log('A supplicant client connected: ' + socket.id);
 
   // Tell supplicant current scene
@@ -146,7 +146,7 @@ supplicants.on('connection', function(socket) {
   if(cscene == 'start') sendMoreOptions(socket);
 
   // Tell conductors when a socket has queried
-  socket.on('query', (query) => {
+  socket.on('query', query=>{
     console.log("RECEIVED QUERY: ", query);
     // Send query as text right away
     chorus.emit('babble', query);
@@ -162,7 +162,7 @@ supplicants.on('connection', function(socket) {
   });
 
   // Listen for this output client to disconnect
-  socket.on('disconnect', function() {
+  socket.on('disconnect', ()=>{
     console.log("A supplicant client has disconnected " + socket.id);
   });
 });
@@ -170,13 +170,13 @@ supplicants.on('connection', function(socket) {
 // Clients in the chorus namespace
 const chorus = io.of('/chorus');
 // Listen for input clients to connect
-chorus.on('connection', function(socket) {
+chorus.on('connection', socket=>{
   console.log('A chorus client connected: ' + socket.id);
   // Tell chorus scene
   socket.emit('cue', cscene);
   // Listen for this input client to disconnect
   // Tell all of the output clients this client disconnected
-  socket.on('disconnect', function() {
+  socket.on('disconnect', ()=>{
     console.log("A chorus client has disconnected " + socket.id);
   });
 });
