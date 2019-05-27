@@ -94,15 +94,6 @@ conductors.on('connection', function(socket) {
     receiveQuery(query);
   });
 
-  // Conductor sets query manually
-  // No throttling
-  socket.on('manual query', query => {
-    console.log("RECEIVED MANUAL QUERY: ", query);
-    // Send query as text right away
-    chorus.emit('query text', query);
-    // supplicants.emit('query', query);
-  })
-
   // Cue chorus
   socket.on('cue chorus', message => {
     chorus.emit('query', message);

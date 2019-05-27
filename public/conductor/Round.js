@@ -3,7 +3,7 @@ class Round {
   constructor(rname, rates){
     this.name = rname;
     this.parts = [];
-    for(let p = 0; p < 4; p++) {
+    for(let p = 0; p < NUM_PARTS; p++) {
       this.parts.push(new Part(rates[p]));
     }
   }

@@ -11,7 +11,7 @@ let DELAY_INCREMENT = 1000 * 1;
 
 // How many cues
 let NUM_ROUNDS = 4;
-let NUM_PARTS = 4;
+let NUM_PARTS = 5;
 
 // Length of each part in seconds
 let PART_LEN = 120;

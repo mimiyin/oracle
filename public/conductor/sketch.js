@@ -6,8 +6,8 @@ let ssocket = io('https://' + document.location.hostname + ':8001/conductor');
 socket.on('connect', () => console.log("Connected"));
 
 // Speak
-socket.on('babble', query => babble(query));
-socket.on('query', query => speak(query));
+socket.on('babble', query => speak(query, BABBLE_CHROME, BABBLE_RATE, BABBLE_PITCH, BABBLE_VOLUME, false));
+socket.on('query', query => broadcast(query));
 
 // Listen for blop data from server
 ssocket.on('shake', message => {
@@ -48,10 +48,8 @@ let synth = window.speechSynthesis;
 
 let voices = synth.getVoices();
 // Get voices asynchronously
-window.speechSynthesis.onvoiceschanged = e => {
-  voices = synth.getVoices();
-  console.log(voices);
-}
+window.speechSynthesis.onvoiceschanged = e => voices = synth.getVoices();
+
 
 
 // Can respond
@@ -76,12 +74,15 @@ function preload() {
     // Get speaking rates for each part
     let rates = table.getRow(0).arr.map(col => parseFloat(col));
     for (let q = 1; q < table.getRowCount(); q++) {
+      let query = table.getString(q, 0);
+      // Skip this row if it's a new round marker
+      if (query == "NEW ROUND") {
+        rounds.push(new Round(table.getString(q, NUM_PARTS), rates));
+        continue;
+      }
       for (let p = 0; p < NUM_PARTS; p++) {
         let query = table.getString(q, p);
-        // Create new round
-        if (query == "NEW ROUND") {
-          if (p == 1) rounds.push(new Round(table.getString(q, NUM_PARTS), rates));
-        } else if (query.length > 0) rounds[rounds.length - 1].addQuery(p, query);
+        if (query.length > 0) rounds[rounds.length - 1].addQuery(p, query);
       }
     }
     // Create table of buttons
@@ -101,7 +102,8 @@ function preload() {
           // Toggle selected state
           if (this.attribute('selected') == "true") this.attribute('selected', "false");
           else this.attribute('selected', "true");
-          emitRoll(this.attribute('round'), this.attribute('part'));
+          // Don't emit options for introductions
+          if(p > 0) emitRoll(this.attribute('round'), this.attribute('part'));
         });
         row.child(column.child(button));
         let queries = part.getQueries();
@@ -110,8 +112,8 @@ function preload() {
           let q_row = createElement('tr');
           let button = createButton(query);
           button.attribute('query', query);
-          button.attribute('part', p);
-          button.mouseClicked(sendQuery);
+          button.attribute('rate', part.rate);
+          button.mouseClicked(manualBroadcast);
           q_row.child(button);
           column.child(q_row);
         }
@@ -165,37 +167,38 @@ function emitRoll(r, p) {
 }
 
 // Manually send an individual query to all supplicants
-function sendQuery() {
+function manualBroadcast() {
   let query = this.attribute('query');
-  socket.emit('manual query', query);
-  speak(query);
-}
-
-// Prepare to speak background babbling
-function babble(query) {
-  if(local) return;
-  utter(query, BABBLE_CHROME, BABBLE_RATE, BABBLE_PITCH, BABBLE_VOLUME, false);
+  let rate = this.attribute('rate');
+  cueChorus(query, rate);
 }
 
 // Prepare to speak selected query
-function speak(query) {
+function broadcast(query) {
   // Code to utter the string with the right computer voice
   // Let oracle respond
   last_asked = millis();
   console.log("SAY IT: " + query);
   let rate = current.part ? current.part.rate : 0.8;
   let pitch = 1;
-  // Emit to chorus whatever is said
+
+  // Cue chorus
+  cueChorus(query, rate);
+}
+
+// Send query to chorus
+function cueChorus(query, rate) {
+  console.log(query, rate);
   socket.emit('cue chorus', {
     rate: rate,
     query: query
   });
   // Only speak if server is screwed
-  if(local) utter(query, VOICE_CHROME, rate, pitch, 1, true);
+  if (local) speak(query, VOICE_CHROME, rate, pitch, 1, true);
 }
 
 // Actually utter the text
-function utter(text, voice, rate, pitch, volume, delay) {
+function speak(text, voice, rate, pitch, volume, delay) {
   let sayThis = new SpeechSynthesisUtterance(text);
   sayThis.voice = voices[voice]; // or 10
   sayThis.rate = rate;
@@ -220,6 +223,7 @@ function keyPressed() {
   switch (keyCode) {
     case TAB:
       let rindex = floor(random(yes.length));
+
       function speakRandomly(opts) {
         let response = opts[rindex];
         console.log("RESPONDING: ", response.text);
