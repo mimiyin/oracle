@@ -3,6 +3,15 @@
   src: url("../fonts/WorkSans-Medium.ttf");
 }
 
+@keyframes fade {
+  0% {
+    opacity: 0
+  }
+  100% {
+    opacity: 1
+  }
+}
+
 body {
   height: 100vh;
   margin: 0px;
@@ -27,7 +36,7 @@ body {
 
 }
 
-.query {
+.query, .end {
   float: left;
   padding: 0 5vw;
   font-size: 1em;
@@ -35,6 +44,13 @@ body {
   align-items: center;
   justify-content: center;
   overflow: hidden;
+}
+
+.end {
+  background: orangered;
+  color: salmon;
+  font-size: 20vw;
+  animation: fade 3s linear;
 }
 
 .fullscreen {

@@ -13,6 +13,9 @@ let voices = synth.getVoices();;
 // Get voices asynchronously
 window.speechSynthesis.onvoiceschanged = e => voices = synth.getVoices();
 
+// Rate of speech
+let rate = 0.8;
+
 function setup() {
   noCanvas();
   // Container for query texts
@@ -65,6 +68,12 @@ function setup() {
     }, QUERY_TS);
     // Say it
     speak(query, rate, 1, 1, true);
+  });
+
+  // Cue scenes
+  socket.on('cue', (scene)=>{
+    console.log("SCENE: ", scene);
+    if(scene == 'end') createDiv("The end.").addClass('end').addClass('fullscreen');
   });
 }
 

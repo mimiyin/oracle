@@ -86,7 +86,8 @@ conductors.on('connection', function(socket) {
   socket.on('cue', (scene)=>{
     console.log("SCENE: " + scene);
     cscene = scene;
-    supplicants.emit('cue', scene)
+    supplicants.emit('cue', scene);
+    chorus.emit('cue', scene);
   });
 
   // Conductor can speak too
@@ -171,7 +172,8 @@ const chorus = io.of('/chorus');
 // Listen for input clients to connect
 chorus.on('connection', function(socket) {
   console.log('A chorus client connected: ' + socket.id);
-
+  // Tell chorus scene
+  socket.emit('cue', cscene);
   // Listen for this input client to disconnect
   // Tell all of the output clients this client disconnected
   socket.on('disconnect', function() {

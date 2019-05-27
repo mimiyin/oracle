@@ -130,6 +130,10 @@ body * {
   background: orangered;
 }
 
+#end p {
+  animation: fade 3s linear;
+}
+
 #turns p#taketurns {
   animation: fade 3s linear;
 }
