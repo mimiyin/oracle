@@ -84,5 +84,6 @@ function emitQ() {
   let query = el.elt.value;
   console.log("FREE QUERY: " + query);
   socket.emit('query', query);
-
+  let write = select('#write');
+  write.attribute('disabled', true);
 }

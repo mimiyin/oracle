@@ -95,6 +95,12 @@ body * {
   background: salmon;
 }
 
+#write[disabled=true] * {
+  background: salmon;
+  color: salmon;
+}
+
+
 #write p {
   font-size: 6vw;
   color: yellow;
