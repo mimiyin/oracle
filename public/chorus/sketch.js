@@ -72,6 +72,7 @@ function setup() {
   socket.on('cue', (scene)=>{
     console.log("SCENE: ", scene);
     if(scene == 'end') createDiv("The end.").addClass('end').addClass('fullscreen');
+    else try { select('.end').remove(); } catch(e) { console.log("NOT ENDED YET")};
   });
 
   // Cue rate

@@ -56,7 +56,7 @@ let q_interval;
 // Set interval for sending out queries
 function startQInterval() {
   // Emit
-  function emitQuery(){
+  function emitQuery() {
     // Remove the last query
     let query = queries.pop();
     chorus.emit('query', query);
@@ -84,35 +84,39 @@ conductors.on('connection', function(socket) {
   console.log('A conductor client connected: ' + socket.id);
 
   // Toggle start screen
-  socket.on('cue', scene=>{
+  socket.on('cue', scene => {
     console.log("SCENE: " + scene);
-    cscene = scene;
+    //Wipe out queue of queries if we're ending
+    if (scene == 'end') queries.length = 0;
+    //Tell everyone current scene
     supplicants.emit('cue', scene);
     chorus.emit('cue', scene);
+    // Update current scene
+    cscene = scene;
   });
 
   // Cue chorus
-  socket.on('cue chorus', query=>chorus.emit('query', query));
+  socket.on('cue chorus', query => chorus.emit('query', query));
 
   // Let supplicants go
-  socket.on('roll', part=>{
+  socket.on('roll', part => {
     console.log("ROLL");
     cpart = part;
     let sdir = io.nsps['/supplicant'].sockets;
-    for(let s in sdir) {
+    for (let s in sdir) {
       let s_socket = sdir[s];
       sendMoreOptions(s_socket);
     }
   });
 
   // Tell chorus rate
-  socket.on('rate', rate =>{
+  socket.on('rate', rate => {
     console.log("New rate.")
     chorus.emit('rate', rate);
   });
 
   // Listen for this output client to disconnect
-  socket.on('disconnect', ()=>{
+  socket.on('disconnect', () => {
     console.log("A conductor client has disconnected " + socket.id);
   });
 });
@@ -120,37 +124,42 @@ conductors.on('connection', function(socket) {
 
 function sendMoreOptions(socket) {
   // If there are no options...
-  if(!cpart) return;
+  if (!cpart) return;
   // Select 3 unique queries for each supplicant
   // Copy the queries
   let d_queries = [];
   let s_queries = [...cpart.queries];
   while (d_queries.length < NUM_QUERIES) {
-    let rand = Math.floor(Math.random()*s_queries.length);
+    let rand = Math.floor(Math.random() * s_queries.length);
     let query = s_queries.splice(rand, 1);
     d_queries.push(query);
   }
   console.log("Sending options to /supplicants. ", d_queries);
-  socket.emit('options', {name : cpart.name, queries : d_queries});
+  socket.emit('options', {
+    name: cpart.name,
+    queries: d_queries
+  });
 }
 
 // Clients in the query namespace
 const supplicants = io.of('/supplicant');
 // Listen for output clients to connect
-supplicants.on('connection', socket=>{
+supplicants.on('connection', socket => {
   console.log('A supplicant client connected: ' + socket.id);
 
   // Tell supplicant current scene
   socket.emit('cue', cscene);
   // Send options if we're already in scene 1
-  if(cscene == 'start') sendMoreOptions(socket);
+  if (cscene == 'start') sendMoreOptions(socket);
 
   // Tell conductors when a socket has queried
-  socket.on('query', query=>{
+  socket.on('query', query => {
     console.log("RECEIVED QUERY: ", query);
     // Send query as text right away
-    chorus.emit('babble', query);
-    conductors.emit('babble', query);
+    if (cscene == 'start') {
+      chorus.emit('babble', query);
+      conductors.emit('babble', query);
+    }
     // Add it to query queue
     queries.push(query);
     // If there's no query interval, start it
@@ -158,11 +167,11 @@ supplicants.on('connection', socket=>{
     // Get new options
     sendMoreOptions(socket);
     // Remove oldest query after we've reached 40 (12000 / 3000)
-    if(queries.length > SETTINGS.QMAX) queries.shift();
+    if (queries.length > SETTINGS.QMAX) queries.shift();
   });
 
   // Listen for this output client to disconnect
-  socket.on('disconnect', ()=>{
+  socket.on('disconnect', () => {
     console.log("A supplicant client has disconnected " + socket.id);
   });
 });
@@ -170,13 +179,13 @@ supplicants.on('connection', socket=>{
 // Clients in the chorus namespace
 const chorus = io.of('/chorus');
 // Listen for input clients to connect
-chorus.on('connection', socket=>{
+chorus.on('connection', socket => {
   console.log('A chorus client connected: ' + socket.id);
   // Tell chorus scene
   socket.emit('cue', cscene);
   // Listen for this input client to disconnect
   // Tell all of the output clients this client disconnected
-  socket.on('disconnect', ()=>{
+  socket.on('disconnect', () => {
     console.log("A chorus client has disconnected " + socket.id);
   });
 });
