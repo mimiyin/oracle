@@ -186,6 +186,7 @@ function receiveQuery(query) {
 
 // Cue scene
 function cue(scene) {
+  if(scene == "write" && ding) ding.play();
   socket.emit('cue', scene);
 }
 
