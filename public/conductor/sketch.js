@@ -84,7 +84,7 @@ function preload() {
         // Set rates for each part in this round
         for (let p = 0; p < NUM_PARTS; p++) {
           let part = round.getPart(p);
-          part.setRate(r < NUM_ROUNDS ? rates[p] : DEFAULT_RATE);
+          part.setRate(r < NUM_ROUNDS - 1 ? rates[p] : DEFAULT_RATE);
         }
         continue;
       }
@@ -186,7 +186,7 @@ function manualBroadcast() {
   socket.emit('cue chorus', query);
   socket.emit('rate', rate);
   // Only speak if server is screwed
-  if (local) speak(query, VOICE_CHROME, rate, pitch, 1, true);
+  if (local) speak(query, VOICE_CHROME, rate, 1, 1, true);
 }
 
 // Prepare to speak selected query
@@ -196,9 +196,8 @@ function broadcast(query) {
   last_asked = millis();
   console.log("SAY IT: " + query);
   let rate = current.part ? current.part.rate : 0.8;
-  let pitch = 1;
   // Speak queries from supplicants
-  //speak(query, VOICE_CHROME, rate, pitch, 1, true);
+  //speak(query, VOICE_CHROME, rate, 1, 1, true);
 }
 
 // Actually utter the text

@@ -112,7 +112,7 @@ conductors.on('connection', function(socket) {
 
   // Tell chorus rate
   socket.on('rate', rate => {
-    console.log("New rate.")
+    console.log("New rate.", rate);
     chorus.emit('rate', rate);
   });
 
