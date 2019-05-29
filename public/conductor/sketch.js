@@ -161,21 +161,21 @@ function manualBroadcast() {
   let rate = this.attribute('rate');
   socket.emit('cue chorus', query);
   socket.emit('rate', rate);
-  receiveQuery(query, true)
+  decideToRespond(query, true, rate)
+  // Speak manual queries without delay
+  if(local) speak(query, rate, rate, DEFAULT_VOLUME, false);
 }
 
 // Prepare to speak supplicant selected query
-function receiveQuery(query, isManual) {
-  // Code to utter the string with the right computer voice
-  // Let oracle respond
-  if(random(1) > RESPOND_TH) {
-    setTimeout(()=>respond(), random(RESPOND_DELAY));
-  }
-  console.log("SAY IT: " + query);
-  let rate = current.part ? current.part.rate : 0.8;
-  let delay = isManual ? false : true;
+function receiveQuery(query) {
+  console.log("RECEIVED QUERY FROM SUPPLICANT: " + query);
+  // Decide whether to respond to it or not
+  decideToRespond();
   // Speak queries from supplicants with random delay
-  if (local) speak(query, rate, DEFAULT_PITCH, DEFAULT_VOLUME, delay);
+  if (local) {
+    let rate = current.part ? current.part.rate : 0.8;
+    speak(query, rate, DEFAULT_PITCH, DEFAULT_VOLUME, true);
+  }
 }
 
 // Cue scene
@@ -193,12 +193,19 @@ function resetTimer() {
   timer = PART_LEN;
 }
 
+// Decide whether or not to respond to query
+function decideToRespond() {
+  console.log("DECIDING WHETHER TO RESPOND");
+  if(random(1) > RESPOND_TH) {
+    setTimeout(()=>respond(), random(RESPOND_DELAY));
+  }
+}
+
 // Select random response
 function respond(){
   let rindex = floor(random(yes.length));
   function speakRandomly(opts) {
     let response = opts[rindex];
-    console.log("RESPONDING: ", response.text);
     response.speak();
   }
   speakRandomly(random(1) > 0.5 ? yes : no);
