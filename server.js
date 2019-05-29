@@ -101,6 +101,7 @@ conductors.on('connection', function(socket) {
   // Let supplicants go
   socket.on('roll', part => {
     console.log("ROLL");
+    // New query options
     cpart = part;
     let sdir = io.nsps['/supplicant'].sockets;
     for (let s in sdir) {
@@ -120,7 +121,6 @@ conductors.on('connection', function(socket) {
     console.log("A conductor client has disconnected " + socket.id);
   });
 });
-
 
 function sendMoreOptions(socket) {
   // If there are no options...
@@ -149,6 +149,7 @@ supplicants.on('connection', socket => {
 
   // Tell supplicant current scene
   socket.emit('cue', cscene);
+
   // Send options if we're already in scene 1
   if (cscene == 'start') sendMoreOptions(socket);
 

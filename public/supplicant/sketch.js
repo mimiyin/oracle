@@ -15,6 +15,16 @@ let start, prompt, options;
 // How much to delay on top of ASK_TH
 let delay = 0;
 
+// Toggle disabled options
+function disableOptions() {
+  let ts = DISABLED_TS + delay;
+  console.log("DISABLE TS: ", ts);
+  for (let option of options) {
+    option.attribute('disabled', "true");
+    setTimeout(() => option.attribute('disabled', "false"), ts);
+  }
+}
+
 function setup() {
   createCanvas(windowWidth, windowHeight);
   start = select("#start");
@@ -29,16 +39,6 @@ function setup() {
     console.log("Connected");
   });
 
-  // Toggle disabled options
-  function disableOptions(reenable) {
-    let ts = DISABLED_TS + delay;
-    console.log("DISABLE TS: ", ts);
-    for (let option of options) {
-      option.attribute('disabled', "true");
-      if (reenable) setTimeout(() => option.attribute('disabled', "false"), ts);
-    }
-  }
-
   // Select options
   for (let option of options) {
     option.mouseClicked(function() {
@@ -46,12 +46,12 @@ function setup() {
       console.log("EMITTING QUERY", query);
       socket.emit('query', query);
       delay += DELAY_INCREMENT;
-      disableOptions(true);
+      disableOptions();
     });
   }
 
   // Set disabled to true right away
-  disableOptions(false);
+  disableOptions();
 
   // Wait to cue scene
   socket.on('cue', scene => cue(scene));
@@ -72,13 +72,7 @@ function setup() {
 
 // Cue scene
 function cue(scene) {
-  if(scene == 'pause') {
-    for (let option of options) {
-      option.html('&nbsp;');
-    }
-    disableOptions(false);
-    return;
-  }
+  console.log("SCENE", scene);
   // Reset delay
   delay = 0;
   let queries = selectAll('.query');

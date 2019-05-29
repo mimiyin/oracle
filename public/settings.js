@@ -36,4 +36,4 @@ let CHORUS_HEIGHT_MARGIN = 275;
 
 // Sound effects
 let DING_VOL = 0.25;
-let CLICK_VOL = 0.25;
+let CLICK_VOL = 0.125;

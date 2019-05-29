@@ -67,7 +67,7 @@ let local = false;
 function preload() {
   // Load ding
   ding = loadSound("ding.wav", () => ding.setVolume(DING_VOL));
-  click = loadSound("click.mp3", () => ding.setVolume(CLICK_VOL));
+  click = loadSound("click.mp3", () => click.setVolume(CLICK_VOL));
 
   // Load alt-text
   let table = loadTable("oracle.csv", function() {
@@ -221,10 +221,10 @@ function asked() {
 function cue(scene) {
   socket.emit('cue', scene);
 }
-// Cue pausing
-function pause(scene) {
+
+// Pause sound
+function pause() {
   click.play();
-  cue(scene);
 }
 
 // Reset timer

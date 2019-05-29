@@ -90,6 +90,12 @@ body * {
   color: rgba(0, 0, 0, 0.5);
 }
 
+.option[disabled=nofade] {
+  pointer-events: none;
+  background: salmon;
+  color: rgba(0, 0, 0, 0.5);
+}
+
 #story {
   background: coral;
 }
