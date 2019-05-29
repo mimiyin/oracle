@@ -88,12 +88,14 @@ function preload() {
           // Toggle selected state
           if (this.attribute('selected') == "true") this.attribute('selected', "false");
           else this.attribute('selected', "true");
+          // Update current
+          updateCurrent(this.attribute('round'), this.attribute('part'));
           // Don't emit options for introductions
           // Don't emit options for last round
           if (p > 0) {
             // Play ding
             ding.play();
-            if(r < NUM_ROUNDS - 1) emitRoll(this.attribute('round'), this.attribute('part'));
+            if(r < NUM_ROUNDS - 1) emitRoll();
           }
         });
         row.child(column.child(button));
@@ -138,17 +140,21 @@ function setup() {
   no.push(new Response("Possibly"));
 }
 
-// Send out next part to server
-function emitRoll(r, p) {
+// Update current section
+function updateCurrent(r, p) {
   console.log("ROLL", r, p);
-  // Update current section
   current.r = r;
   current.p = p;
   current.round = rounds[r];
   current.part = rounds[r].getPart(p);
+}
+
+// Send out next part to server
+function emitRoll() {
+  console.log("EMIT OPTIONS: ", current.r, current.p);
   let data = {
-    name: rounds[r].name,
-    queries: rounds[r].getPart(p).getQueries()
+    name: current.round.name,
+    queries: current.part.getQueries()
   }
   socket.emit('roll', data);
   // Send rate to chorus
@@ -195,7 +201,8 @@ function resetTimer() {
 
 // Decide whether or not to respond to query
 function decideToRespond() {
-  console.log("DECIDING WHETHER TO RESPOND");
+  console.log("DECIDING WHETHER TO RESPOND", current.r);
+  if(!(current.r in ROUNDS)) return;
   if(random(1) > RESPOND_TH) {
     setTimeout(()=>respond(), random(RESPOND_DELAY));
   }
