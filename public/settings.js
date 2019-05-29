@@ -21,6 +21,8 @@ let VOICE_CHROME = 40;
 let VOICE_SAFARI = 44;
 // Range for delaying speech for chorus effect
 let SPEECH_DELAY = 100;
+// Default rate of speech
+let DEFAULT_RATE = 0.8;
 
 
 // Babble voice
@@ -28,3 +30,10 @@ let BABBLE_CHROME = 40;
 let BABBLE_RATE = 1.2;
 let BABBLE_PITCH = 1;
 let BABBLE_VOLUME = 0.05;
+
+// Chorus formatting
+let CHORUS_HEIGHT_MARGIN = 275;
+
+// Sound effects
+let DING_VOL = 0.25;
+let CLICK_VOL = 0.25;

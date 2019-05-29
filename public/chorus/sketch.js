@@ -18,18 +18,7 @@ let rate = 0.8;
 
 function setup() {
   noCanvas();
-  // Container for query texts
-  let babble = select('#babble');
-  // Display the query text right away
-  socket.on('babble', (query) => {
-    let babbleSpan = createSpan(query).addClass('babble');
-    babble.child(babbleSpan);
-    // Remove query after a certain about of time
-    setTimeout(() => {
-      babbleSpan.remove();
-    }, QUERY_TEXT_TS);
-  });
-
+  
   // Container for spoken queries
   let body = select('body');
   // Listen for blop data from server
@@ -44,7 +33,7 @@ function setup() {
 
     function scaleFS(el) {
       // Make it as tall as the window
-      while (el.size().height < windowHeight - 150) {
+      while (el.size().height < windowHeight - CHORUS_HEIGHT_MARGIN) {
         fs++;
         el.style('font-size', fs + 'px');
       }

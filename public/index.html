@@ -13,7 +13,7 @@
 <body>
   <script src="./settings.js"></script>
   <script src="./supplicant/sketch.js"></script>
-  <div id="wait" class="scene bookend" hidden=false>
+  <div id="wait" class="scene message" hidden=false>
     <p>We are waiting to begin...</p>
   </div>
   <div id="start" class="scene" hidden=true disabled=false>
@@ -23,6 +23,10 @@
     <div class="option"></div>
     <div class="option"></div>
   </div>
+  <div id="story" class="scene message" hidden=true>
+    <p>I will tell you a story.</p>
+  </div>
+
   <div id="write" class="scene" hidden=true>
     <p>Ask me...</p>
     <div>
@@ -30,7 +34,7 @@
       <button onclick="emitQ()">Submit</button>
     </div>
   </div>
-  <div id="end" class="scene bookend" hidden=true>
+  <div id="end" class="scene message" hidden=true>
     <p>The end.</p>
   </div>
   <div id="turns" class="scene" hidden=true>

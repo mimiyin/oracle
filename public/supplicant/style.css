@@ -27,10 +27,9 @@ body * {
   width: 100vw;
   height: 115vh;
   text-align: center;
-  background: yellow;
 }
 
-.bookend p {
+.message p {
   color: salmon;
   opacity: 1;
   animation: fade 3s alternate infinite;
@@ -43,6 +42,9 @@ body * {
   100% {
     opacity: 1
   }
+}
+#wait {
+  background: yellow;
 }
 
 #start {
@@ -86,6 +88,14 @@ body * {
   animation: fade 3s ease-out 1;
   background: salmon;
   color: rgba(0, 0, 0, 0.5);
+}
+
+#story {
+  background: coral;
+}
+
+#story p {
+  color: black;
 }
 
 #write {

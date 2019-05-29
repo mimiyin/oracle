@@ -156,10 +156,8 @@ supplicants.on('connection', socket => {
   socket.on('query', query => {
     console.log("RECEIVED QUERY: ", query);
     // Send query as text right away
-    if (cscene == 'start') {
-      chorus.emit('babble', query);
-      conductors.emit('babble', query);
-    }
+    if (cscene == 'start') conductors.emit('babble', query);
+
     // Add it to query queue
     queries.push(query);
     // If there's no query interval, start it

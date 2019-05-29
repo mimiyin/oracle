@@ -55,8 +55,8 @@ window.speechSynthesis.onvoiceschanged = e => voices = synth.getVoices();
 // Can respond
 let last_asked;
 
-// Ding
-let ding;
+// Ding and click
+let ding, click;
 // Timer
 let timer_el;
 let timer = 0;
@@ -66,7 +66,8 @@ let local = false;
 
 function preload() {
   // Load ding
-  ding = loadSound("ding.wav", () => ding.setVolume(0.25));
+  ding = loadSound("ding.wav", () => ding.setVolume(DING_VOL));
+  click = loadSound("click.mp3", () => ding.setVolume(CLICK_VOL));
 
   // Load alt-text
   let table = loadTable("oracle.csv", function() {
@@ -77,7 +78,14 @@ function preload() {
       let query = table.getString(q, 0);
       // Skip this row if it's a new round marker
       if (query == "NEW ROUND") {
-        rounds.push(new Round(table.getString(q, NUM_PARTS), rates));
+        let round = new Round(table.getString(q, NUM_PARTS))
+        let r = rounds.length;
+        rounds.push(round);
+        // Set rates for each part in this round
+        for (let p = 0; p < NUM_PARTS; p++) {
+          let part = round.getPart(p);
+          part.setRate(r < NUM_ROUNDS ? rates[p] : DEFAULT_RATE);
+        }
         continue;
       }
       for (let p = 0; p < NUM_PARTS; p++) {
@@ -99,11 +107,18 @@ function preload() {
         button.attribute('round', r);
         button.attribute('part', p);
         button.mouseClicked(function() {
+          // Reset timer
+          resetTimer()
           // Toggle selected state
           if (this.attribute('selected') == "true") this.attribute('selected', "false");
           else this.attribute('selected', "true");
           // Don't emit options for introductions
-          if(p > 0) emitRoll(this.attribute('round'), this.attribute('part'));
+          // Don't emit options for last round
+          if (p > 0) {
+            // Play ding
+            ding.play();
+            if(r < NUM_ROUNDS - 1) emitRoll(this.attribute('round'), this.attribute('part'));
+          }
         });
         row.child(column.child(button));
         let queries = part.getQueries();
@@ -155,10 +170,6 @@ function emitRoll(r, p) {
   current.p = p;
   current.round = rounds[r];
   current.part = rounds[r].getPart(p);
-  // Play ding
-  ding.play();
-  // Reset timer
-  timer = PART_LEN;
   let data = {
     name: rounds[r].name,
     queries: rounds[r].getPart(p).getQueries()
@@ -206,9 +217,19 @@ function asked() {
   return millis() - last_asked < ASK_TS;
 }
 
-// Toggle start
+// Cue scene
 function cue(scene) {
   socket.emit('cue', scene);
+}
+// Cue pausing
+function pause(scene) {
+  click.play();
+  cue(scene);
+}
+
+// Reset timer
+function resetTimer() {
+  timer = PART_LEN;
 }
 
 // Respond

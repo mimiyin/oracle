@@ -25,17 +25,17 @@ function setup() {
   socket = io('/supplicant');
 
   // Listen for confirmation of connection
-  socket.on('connect', function() {
+  socket.on('connect', () => {
     console.log("Connected");
   });
 
   // Toggle disabled options
-  function disableOptions() {
+  function disableOptions(reenable) {
     let ts = DISABLED_TS + delay;
     console.log("DISABLE TS: ", ts);
     for (let option of options) {
       option.attribute('disabled', "true");
-      setTimeout(() => option.attribute('disabled', "false"), ts);
+      if (reenable) setTimeout(() => option.attribute('disabled', "false"), ts);
     }
   }
 
@@ -46,30 +46,39 @@ function setup() {
       console.log("EMITTING QUERY", query);
       socket.emit('query', query);
       delay += DELAY_INCREMENT;
-      disableOptions();
+      disableOptions(true);
     });
   }
 
   // Set disabled to true right away
-  disableOptions();
+  disableOptions(false);
 
   // Wait to cue scene
-  socket.on('cue', (scene) => cue(scene));
+  socket.on('cue', scene => cue(scene));
 
   // Load prompt and options
   // You'// get new options as soon as you select something
-  socket.on('options', function(opts) {
+  socket.on('options', opts => {
     console.log("OPTIONS", opts.queries);
     prompt.html(opts.name);
     for (let o in opts.queries) {
       let option = opts.queries[o];
       options[o].html(option);
     }
+    // Disable options and the re-enable them
+    disableOptions(true);
   });
 }
 
 // Cue scene
 function cue(scene) {
+  if(scene == 'pause') {
+    for (let option of options) {
+      option.html('&nbsp;');
+    }
+    disableOptions(false);
+    return;
+  }
   // Reset delay
   delay = 0;
   let queries = selectAll('.query');
