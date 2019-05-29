@@ -203,7 +203,7 @@ function resetTimer() {
 // Decide whether or not to respond to query
 function decideToRespond() {
   console.log("DECIDING WHETHER TO RESPOND", current.r);
-  if(!(current.r in ROUNDS)) return;
+  if(!(current.r in ROUNDS) && !(current.p in PARTS)) return;
   if(random(1) > RESPOND_TH) {
     setTimeout(()=>respond(), random(RESPOND_DELAY));
   }
