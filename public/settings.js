@@ -20,7 +20,7 @@ let DELAY_INCREMENT = 1000 * 1;
 // RESPONSE
 let RESPOND_TH = 0.34;
 let RESPOND_DELAY = QUERY_TS * 2;
-let ROUNDS = {1 : true, 2 : true, 3 : true };
+let ROUNDS = {1 : true, 2 : true};
 
 // VOICE
 let VOICE_CHROME = 40;
