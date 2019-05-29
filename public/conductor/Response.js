@@ -7,11 +7,9 @@ class Response {
   speak() {
     // Code to utter the string with the right computer voice
     // Let oracle respond
-    console.log("SAY IT: " + this.text);
-    let sayThis = new SpeechSynthesisUtterance(this.text);
-    sayThis.voice = voices[VOICE_CHROME]; // or 10
-    sayThis.rate = random(0.6, 1.2);
-    sayThis.pitch = random(0.8, 1.2);
-    synth.speak(sayThis);
+    console.log("RESPOND: " + this.text);
+    let rate = random(0.6, 1.2);
+    let pitch = random(0.8, 1.2);
+    speak(this.text, rate, pitch, DEFAULT_VOLUME, false);
   }
 }

@@ -1,23 +1,11 @@
 // Open and connect output socket
 let socket = io('/conductor');
-let ssocket = io('https://' + document.location.hostname + ':8001/conductor');
 
 // Listen for confirmation of connection
 socket.on('connect', () => console.log("Connected"));
 
 // Speak
-socket.on('babble', query => speak(query, BABBLE_CHROME, BABBLE_RATE, BABBLE_PITCH, BABBLE_VOLUME, false));
-socket.on('query', query => broadcast(query));
-
-// Listen for blop data from server
-ssocket.on('shake', message => {
-  console.log("ORACLE SHOOK");
-  //if (current.r == NUM_ROUNDS - 1 || !asked()) return;
-  let id = message.id;
-  let user = users[id] || createNewUser(id);
-  let response = user[floor(random(user.length))];
-  response.speak();
-});
+socket.on('query', query => receiveQuery(query));
 
 // Remove disconnected users
 socket.on('disconnected', id => delete users[id]);
@@ -42,18 +30,6 @@ let current = {
   round: null,
   part: null
 };
-
-// Speech stuff
-let synth = window.speechSynthesis;
-
-let voices = synth.getVoices();
-// Get voices asynchronously
-window.speechSynthesis.onvoiceschanged = e => voices = synth.getVoices();
-
-
-
-// Can respond
-let last_asked;
 
 // Ding and click
 let ding, click;
@@ -179,41 +155,27 @@ function emitRoll(r, p) {
   socket.emit('rate', current.part.rate);
 }
 
-// Manually send an individual query to all supplicants
+// Manually send an individual query to chorus
 function manualBroadcast() {
   let query = this.attribute('query');
   let rate = this.attribute('rate');
   socket.emit('cue chorus', query);
   socket.emit('rate', rate);
-  // Only speak if server is screwed
-  if (local) speak(query, VOICE_CHROME, rate, 1, 1, true);
+  receiveQuery(query, true)
 }
 
-// Prepare to speak selected query
-function broadcast(query) {
+// Prepare to speak supplicant selected query
+function receiveQuery(query, isManual) {
   // Code to utter the string with the right computer voice
   // Let oracle respond
-  last_asked = millis();
+  if(random(1) > RESPOND_TH) {
+    setTimeout(()=>respond(), random(RESPOND_DELAY));
+  }
   console.log("SAY IT: " + query);
   let rate = current.part ? current.part.rate : 0.8;
-  // Speak queries from supplicants
-  //speak(query, VOICE_CHROME, rate, 1, 1, true);
-}
-
-// Actually utter the text
-function speak(text, voice, rate, pitch, volume, delay) {
-  let sayThis = new SpeechSynthesisUtterance(text);
-  sayThis.voice = voices[voice]; // or 10
-  sayThis.rate = rate;
-  sayThis.pitch = pitch;
-  sayThis.volume = volume;
-  if (delay) setTimeout(() => synth.speak(sayThis), random(SPEECH_DELAY));
-  else synth.speak(sayThis);
-}
-
-// Has something been asked recently?
-function asked() {
-  return millis() - last_asked < ASK_TS;
+  let delay = isManual ? false : true;
+  // Speak queries from supplicants with random delay
+  if (local) speak(query, rate, DEFAULT_PITCH, DEFAULT_VOLUME, delay);
 }
 
 // Cue scene
@@ -221,8 +183,8 @@ function cue(scene) {
   socket.emit('cue', scene);
 }
 
-// Pause sound
-function pause() {
+// Trigger end of scene sound
+function almost() {
   click.play();
 }
 
@@ -231,18 +193,23 @@ function resetTimer() {
   timer = PART_LEN;
 }
 
+// Select random response
+function respond(){
+  let rindex = floor(random(yes.length));
+  function speakRandomly(opts) {
+    let response = opts[rindex];
+    console.log("RESPONDING: ", response.text);
+    response.speak();
+  }
+  speakRandomly(random(1) > 0.5 ? yes : no);
+}
+
 // Respond
+// Toggle local
 function keyPressed() {
   switch (keyCode) {
     case TAB:
-      let rindex = floor(random(yes.length));
-
-      function speakRandomly(opts) {
-        let response = opts[rindex];
-        console.log("RESPONDING: ", response.text);
-        response.speak();
-      }
-      speakRandomly(random(1) > 0.5 ? yes : no);
+      respond();
       break;
     case ENTER || RETURN:
       local = !local;

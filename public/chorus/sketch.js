@@ -6,21 +6,15 @@ socket.on('connect', function() {
   console.log("Connected");
 });
 
-// Speech stuff
-let synth = window.speechSynthesis;
-let voices = synth.getVoices();;
-// Get voices asynchronously for Chrome
-// Get voices asynchronously
-window.speechSynthesis.onvoiceschanged = e => voices = synth.getVoices();
-
 // Rate of speech
 let rate = 0.8;
 
 function setup() {
   noCanvas();
-  
+
   // Container for spoken queries
   let body = select('body');
+
   // Listen for blop data from server
   socket.on('query', (query) => {
     // Code to utter the string with the right computer voice
@@ -69,20 +63,4 @@ function setup() {
     console.log("NEW RATE: ", r);
     rate = r;
   })
-}
-
-function speak(text, rate, pitch, volume, delay) {
-  let sayThis = new SpeechSynthesisUtterance(text);
-  sayThis.voice = voices[VOICE_SAFARI]; // or 10
-  sayThis.rate = rate;
-  sayThis.pitch = pitch;
-  sayThis.volume = volume;
-
-  // Delay the speech by some random amount
-  if (delay) {
-    setTimeout(() => {
-      console.log("SPEAKING NOW: ", text);
-      synth.speak(sayThis);
-    }, random(SPEECH_DELAY));
-  } else synth.speak(sayThis);
 }

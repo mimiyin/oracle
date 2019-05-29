@@ -157,7 +157,7 @@ supplicants.on('connection', socket => {
   socket.on('query', query => {
     console.log("RECEIVED QUERY: ", query);
     // Send query as text right away
-    if (cscene == 'start') conductors.emit('babble', query);
+    if (cscene == 'start') babble.emit('query', query);
 
     // Add it to query queue
     queries.push(query);
@@ -182,6 +182,19 @@ chorus.on('connection', socket => {
   console.log('A chorus client connected: ' + socket.id);
   // Tell chorus scene
   socket.emit('cue', cscene);
+  // Listen for this input client to disconnect
+  // Tell all of the output clients this client disconnected
+  socket.on('disconnect', () => {
+    console.log("A chorus client has disconnected " + socket.id);
+  });
+});
+
+// Clients in the babble namespace
+const babble = io.of('/babble');
+// Listen for input clients to connect
+chorus.on('connection', socket => {
+  console.log('A babble client connected: ' + socket.id);
+
   // Listen for this input client to disconnect
   // Tell all of the output clients this client disconnected
   socket.on('disconnect', () => {
