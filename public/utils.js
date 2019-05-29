@@ -17,7 +17,7 @@ function speak(text, rate, pitch, volume, delay) {
   if (delay) {
     setTimeout(() => {
       console.log("SPEAKING NOW: ", text);
-      sayThis.rate = 2;
+      sayThis.rate = rate;
       synth.speak(sayThis);
     }, random(SPEECH_DELAY));
   } else synth.speak(sayThis);

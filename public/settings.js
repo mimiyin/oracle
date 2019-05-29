@@ -36,7 +36,7 @@ let DEFAULT_VOLUME = 1;
 let BABBLE_CHROME = 40;
 let BABBLE_RATE = 1.5;
 let BABBLE_PITCH = 1;
-let BABBLE_VOLUME = 0.05;
+let BABBLE_VOLUME = 0.25;
 
 // Sound effects
 let DING_VOL = 0.25;
