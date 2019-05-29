@@ -42,4 +42,4 @@ let BABBLE_VOLUME = 0.25;
 
 // Sound effects
 let DING_VOL = 0.25;
-let CLICK_VOL = 0.125;
+let CLICK_VOL = 0.25;
