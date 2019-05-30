@@ -7,8 +7,8 @@
     "email": "mimiyin@gmail.com"
   },
   "dependencies": {
-    "express": "^4.16.4",
     "csv-parse": "^4.4.1",
+    "express": "^4.16.4",
     "socket.io": "^2.2.0"
   },
   "keywords": [
@@ -18,5 +18,12 @@
   "repository": {
     "type": "git",
     "url": "git://github.com/mimiyin/oracle-no-1.git"
+  },
+  "devDependencies": {
+    "chromedriver": "^74.0.0",
+    "nightwatch": "^1.1.11"
+  },
+  "scripts": {
+    "test": "./node_modules/nightwatch/bin/nightwatch"
   }
 }
