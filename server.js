@@ -77,7 +77,7 @@ conductors.on('connection', function(socket) {
   socket.on('cue', scene => {
     console.log("SCENE: " + scene);
     //Wipe out queue of queries if we're ending
-    if (scene == 'end') queries.length = 0;
+    if (scene == 'end' || scene == 'turns') clearq();
     //Tell everyone current scene
     supplicants.emit('cue', scene);
     chorus.emit('cue', scene);
@@ -91,6 +91,8 @@ conductors.on('connection', function(socket) {
   // Let supplicants go
   socket.on('roll', part => {
     console.log("ROLL");
+    // Clear queue
+    clearq();
     // New query options
     cpart = part;
     let sdir = io.nsps['/supplicant'].sockets;
@@ -191,3 +193,8 @@ chorus.on('connection', socket => {
     console.log("A chorus client has disconnected " + socket.id);
   });
 });
+
+// Clear queue
+function clearq(){
+  queries.length = 0;
+}
