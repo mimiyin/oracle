@@ -17,12 +17,6 @@ let DISABLED_TS = 1000 * 3;
 // How much to delay people for each successful query they make
 let DELAY_INCREMENT = 1000 * 1;
 
-// RESPONSE
-let RESPOND_TH = 0.34;
-let RESPOND_DELAY = QUERY_TS * 2;
-let ROUNDS = {1 : true, 2 : true};
-let PARTS = { 1: true, 2 : true, 3: true};
-
 // VOICE
 let VOICE_CHROME = 40;
 let VOICE_SAFARI = 44;

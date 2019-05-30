@@ -167,7 +167,6 @@ function manualBroadcast() {
   let rate = this.attribute('rate');
   socket.emit('cue chorus', query);
   socket.emit('rate', rate);
-  decideToRespond(query, true, rate)
   // Speak manual queries without delay
   if(local) speak(query, rate, rate, DEFAULT_VOLUME, false);
 }
@@ -175,8 +174,6 @@ function manualBroadcast() {
 // Prepare to speak supplicant selected query
 function receiveQuery(query) {
   console.log("RECEIVED QUERY FROM SUPPLICANT: " + query);
-  // Decide whether to respond to it or not
-  decideToRespond();
   // Speak queries from supplicants with random delay
   if (local) {
     let rate = current.part ? current.part.rate : 0.8;
@@ -198,15 +195,6 @@ function almost() {
 // Reset timer
 function resetTimer() {
   timer = PART_LEN;
-}
-
-// Decide whether or not to respond to query
-function decideToRespond() {
-  console.log("DECIDING WHETHER TO RESPOND", current.r);
-  if(!(current.r in ROUNDS) && !(current.p in PARTS)) return;
-  if(random(1) > RESPOND_TH) {
-    setTimeout(()=>respond(), random(RESPOND_DELAY));
-  }
 }
 
 // Select random response
