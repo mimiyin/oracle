@@ -95,7 +95,7 @@ function preload() {
           if (p > 0) {
             // Play ding
             ding.play();
-            if(r < NUM_ROUNDS - 1) emitRoll();
+            if (r < NUM_ROUNDS - 1) emitRoll();
           }
         });
         row.child(column.child(button));
@@ -165,10 +165,11 @@ function emitRoll() {
 function manualBroadcast() {
   let query = this.attribute('query');
   let rate = this.attribute('rate');
+  let part = this.attribute('part');
   socket.emit('cue chorus', query);
   socket.emit('rate', rate);
   // Speak manual queries without delay
-  if(local) speak(query, rate, rate, DEFAULT_VOLUME, false);
+  if (local) speak(query, rate, rate, DEFAULT_VOLUME, false);
 }
 
 // Prepare to speak supplicant selected query
@@ -183,7 +184,7 @@ function receiveQuery(query) {
 
 // Cue scene
 function cue(scene) {
-  if(scene == "write" && ding) ding.play();
+  if (scene == "write" && ding) ding.play();
   socket.emit('cue', scene);
 }
 
@@ -198,8 +199,9 @@ function resetTimer() {
 }
 
 // Select random response
-function respond(){
+function respond() {
   let rindex = floor(random(yes.length));
+
   function speakRandomly(opts) {
     let response = opts[rindex];
     response.speak();

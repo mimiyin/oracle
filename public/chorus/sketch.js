@@ -8,6 +8,7 @@ socket.on('connect', function() {
 
 // Rate of speech
 let rate = 0.8;
+let speaking = false;
 
 function setup() {
   noCanvas();
@@ -48,12 +49,14 @@ function setup() {
       body.removeClass('chartreuse');
     }, QUERY_TS);
     // Say it
-    speak(query, rate, 1, 1, true);
+    if(speaking) speak(query, rate, 1, 1, true);
   });
 
   // Cue scenes
   socket.on('cue', (scene)=>{
     console.log("SCENE: ", scene);
+    // Don't speak queries during intro
+    speaking = scene != 'wait';
     if(scene == 'end') createDiv("The end.").addClass('end').addClass('fullscreen');
     else try { select('.end').remove(); } catch(e) { console.log("NOT ENDED YET")};
   });
