@@ -11,16 +11,6 @@ const http = require('http');
 const express = require('express');
 const app = express();
 
-// Fileserver
-const path = require('path');
-const fs = require('fs');
-
-// SSL Certs
-const certOptions = {
-  key: fs.readFileSync(path.resolve('cert2/server.key')),
-  cert: fs.readFileSync(path.resolve('cert2/server.crt'))
-}
-
 // Create secure server
 const server = http.createServer(app).listen(PORT, function() {
   console.log('Server listening at port: ', PORT);
