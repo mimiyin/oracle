@@ -83,3 +83,17 @@ function setup() {
     rate = r;
   })
 }
+
+// Keypress to choose voice
+function keyPressed() {
+  switch (key) {
+    case '1':
+      VOICE = VOICE_CHROME;
+      break;
+    case '2':
+      VOICE = VOICE_SAFARI;
+      break;
+  }
+
+  console.log("VOICE: ", VOICE);
+}
