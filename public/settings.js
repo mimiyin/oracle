@@ -22,7 +22,7 @@ let VOICE_CHROME = 40;
 let VOICE_SAFARI = 44;
 let VOICE = VOICE_CHROME;
 // Range for delaying speech for chorus effect
-let SPEECH_DELAY = 50;
+let SPEECH_DELAY = 0;
 // Default speech settings
 let DEFAULT_RATE = 0.8;
 let DEFAULT_PITCH = 1;
