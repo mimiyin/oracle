@@ -23,7 +23,6 @@ function setup() {
     let qds = selectAll('.query');
     for (let qd of qds) qd.remove();
     let queryDiv = createDiv(query).addClass('query');
-    if(query == "or-cl.io") queryDiv.style('word-break', 'keep-all');
     // Size the font to the screen
     let fs = 0;
 
@@ -32,19 +31,22 @@ function setup() {
       function setFS() {
         el.style('font-size', fs + 'px');
       }
+
+      // Don't size on height for url
       // Make sure it fits height-wise
       while (el.size().height < windowHeight) {
         fs++;
         setFS();
-        console.log(el.size().height, windowHeight);
       }
       fs--;
       setFS();
+
       //Then make sure it fits width-wise
       while (el.size().width > windowWidth) {
         fs--;
         setFS()
       }
+
       el.addClass('fullscreen');
     }
     // Scale font-size
@@ -53,7 +55,7 @@ function setup() {
     body.addClass('chartreuse');
     // Remove query after a certain about of time
     setTimeout(() => {
-      queryDiv.remove();
+      //queryDiv.remove();
       body.removeClass('chartreuse');
     }, QUERY_TS);
 
