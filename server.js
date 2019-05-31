@@ -24,6 +24,8 @@ const io = require('socket.io').listen(server);
 
 // Current scene
 let cscene = 'wait';
+// Current rate
+let crate = 0.8;
 
 // How many queries does each supplicant receive?
 const NUM_QUERIES = 4;
@@ -106,7 +108,8 @@ conductors.on('connection', function(socket) {
   // Tell chorus rate
   socket.on('rate', rate => {
     console.log("New rate.", rate);
-    chorus.emit('rate', rate);
+    crate = rate;
+    chorus.emit('rate', crate);
   });
 
   // Listen for this output client to disconnect
@@ -175,6 +178,7 @@ chorus.on('connection', socket => {
   console.log('A chorus client connected: ' + socket.id);
   // Tell chorus scene
   socket.emit('cue', cscene);
+  socket.emit('rate', crate);
   // Listen for this input client to disconnect
   // Tell all of the output clients this client disconnected
   socket.on('disconnect', () => {
