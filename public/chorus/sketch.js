@@ -55,7 +55,7 @@ function setup() {
     body.addClass('chartreuse');
     // Remove query after a certain about of time
     setTimeout(() => {
-      //queryDiv.remove();
+      queryDiv.remove();
       body.removeClass('chartreuse');
     }, QUERY_TS);
 
