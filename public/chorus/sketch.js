@@ -23,6 +23,7 @@ function setup() {
     let qds = selectAll('.query');
     for (let qd of qds) qd.remove();
     let queryDiv = createDiv(query).addClass('query');
+    if(query == "or-cl.io") queryDiv.style('word-break', 'keep-all');
     // Size the font to the screen
     let fs = 0;
 
