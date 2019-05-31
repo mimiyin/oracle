@@ -13,37 +13,20 @@
 }
 
 body {
-  height: 100vh;
   margin: 0px;
   font-family: sans-serif;
   background: coral;
   font-family: "Custom";
 }
 
-#babble {
-  position: fixed;
-  width: 100vw;
-  bottom: 0vh;
-  left: 0vw;
-  z-index: -1;
-}
-
-.babble {
-  font-size: 2em;
-  color: tan;
-  padding: 0 0.1em;
-  word-wrap: break-word;
-
-}
 
 .query, .end {
   float: left;
   padding: 0 5vw;
-  font-size: 1em;
+  font-size: 0px;
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
 }
 
 .end {
@@ -56,6 +39,7 @@ body {
 .fullscreen {
   width: 90vw;
   height: 100vh;
+  overflow: hidden;
 }
 
 .chartreuse {

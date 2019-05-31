@@ -9,7 +9,7 @@ let PART_LEN = 120;
 // Show query for 5 seconds
 let QUERY_TS = 1000 * 5;
 // Chorus formatting
-let CHORUS_HEIGHT_MARGIN = 275;
+let CHORUS_HEIGHT_MARGIN = 100;
 
 // SUPPLICANT
 // Disable options for 3 seconds

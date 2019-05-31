@@ -59,6 +59,7 @@ function startQInterval() {
   //Emit a query every 3 seconds
   q_interval = setInterval(() => {
     if (queries.length < 1) {
+      console.log("NO MORE QUERIES");
       clearInterval(q_interval);
       q_interval = null;
       return;
@@ -77,7 +78,7 @@ conductors.on('connection', function(socket) {
   socket.on('cue', scene => {
     console.log("SCENE: " + scene);
     //Wipe out queue of queries if we're ending
-    if (scene == 'end' || scene == 'turns') clearq();
+    clearq();
     //Tell everyone current scene
     supplicants.emit('cue', scene);
     chorus.emit('cue', scene);
@@ -197,4 +198,5 @@ chorus.on('connection', socket => {
 // Clear queue
 function clearq(){
   queries.length = 0;
+  console.log("CLEARED Q: ", queries.length);
 }
