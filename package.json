@@ -7,7 +7,7 @@
     "email": "mimiyin@gmail.com"
   },
   "dependencies": {
-    "csv-parse": "^4.4.1",
+    "csv-parse": "^4.4.6",
     "express": "^4.16.4",
     "socket.io": "^2.2.0"
   },
